@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:30:35 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/10/22 20:02:18 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:05:31 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	init_flags(t_flags *flags)
 	flags->space = 0;
 	flags->plus = 0;
 	flags->field_width = 0;
-	flags->precision = 1000;
+	flags->precision = 10000000;
 }
 
 void	manage_flags2(t_info *info, int *i, t_flags *flags)

@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int	get_size(int n, int sign)
+static int	gesize_t(int n, int sign)
 {
 	int	size;
 
@@ -63,7 +63,7 @@ char	*ft_itoa(int n)
 		sign = -1;
 		n *= -1;
 	}
-	size = get_size(n, sign);
+	size = gesize_t(n, sign);
 	res = (char *)malloc(sizeof(char) * (size + 1));
 	if (!res)
 		return (0);

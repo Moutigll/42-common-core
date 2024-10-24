@@ -6,13 +6,13 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:55:57 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/10/16 16:32:03 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:55:03 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(t_size nmemb, t_size size)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*dest;
 
