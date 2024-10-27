@@ -30,3 +30,4 @@ typedef struct s_newline
 void	ft_lstadd_back(t_list **list, char *buffer, int fd);
 char	*get_next_line(int fd);
 t_list	*ft_lstlast(t_list *lst);
+void	free_list(t_list **list, t_list *clean_node, char *buf);

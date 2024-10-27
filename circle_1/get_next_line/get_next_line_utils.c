@@ -37,3 +37,26 @@ void	ft_lstadd_back(t_list **list, char *buffer, int fd)
 	new_node->buffer = buffer;
 	new_node->next = NULL;
 }
+
+void	free_list(t_list **list, t_list *clean_node, char *buf)
+{
+	t_list	*tmp;
+
+	if (NULL == *list)
+		return ;
+	while (*list)
+	{
+		tmp = (*list)->next;
+		free((*list)->buffer);
+		free(*list);
+		*list = tmp;
+	}
+	*list = NULL;
+	if (clean_node->buffer[0])
+		*list = clean_node;
+	else
+	{
+		free(buf);
+		free(clean_node);
+	}
+}

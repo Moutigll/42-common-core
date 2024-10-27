@@ -67,7 +67,7 @@ char	*extract_line(t_list *list, t_newline *line)
 	int		i;
 	int		k;
 
-	char_line = malloc(sizeof(char) * line->size + 2);
+	char_line = malloc(sizeof(char) * (line->size + 2));
 	if (!char_line || !list)
 		return (NULL);
 	k = 0;
@@ -90,30 +90,7 @@ char	*extract_line(t_list *list, t_newline *line)
 	return (char_line);
 }
 
-void	dealloc(t_list **list, t_list *clean_node, char *buf)
-{
-	t_list	*tmp;
-
-	if (NULL == *list)
-		return ;
-	while (*list)
-	{
-		tmp = (*list)->next;
-		free((*list)->buffer);
-		free(*list);
-		*list = tmp;
-	}
-	*list = NULL;
-	if (clean_node->buffer[0])
-		*list = clean_node;
-	else
-	{
-		free(buf);
-		free(clean_node);
-	}
-}
-
-void	polish_list(t_list **list)
+void	clean_list(t_list **list)
 {
 	t_list	*last_node;
 	t_list	*clean_node;
@@ -123,19 +100,19 @@ void	polish_list(t_list **list)
 
 	buf = malloc(BUFFER_SIZE + 1);
 	clean_node = malloc(sizeof(t_list));
-	if (NULL == buf || NULL == clean_node)
+	if (!buf || !clean_node)
 		return ;
 	last_node = ft_lstlast(*list);
 	i = 0;
 	k = 0;
 	while (last_node->buffer[i] && last_node->buffer[i] != '\n')
-		++i;
+		i++;
 	while (last_node->buffer[i] && last_node->buffer[++i])
 		buf[k++] = last_node->buffer[i];
 	buf[k] = '\0';
 	clean_node->buffer = buf;
 	clean_node->next = NULL;
-	dealloc(list, clean_node, buf);
+	free_list(list, clean_node, buf);
 }
 
 char	*get_next_line(int fd)
@@ -146,13 +123,9 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || fd > 4095 || BUFFER_SIZE <= 0 || read(fd, &next_line, 0) < 0)
 		return (NULL);
-
-	// Initialiser line
 	line = malloc(sizeof(t_newline));
 	if (!line)
 		return (NULL);
-
-
 	create_list(list, fd, line);
 	if (!list[fd])
 	{
@@ -160,8 +133,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	next_line = extract_line(list[fd], line);
-	polish_list(&list[fd]);
-
-	free(line); // Libérer line après utilisation
+	clean_list(&list[fd]);
+	free(line);
 	return (next_line);
 }
