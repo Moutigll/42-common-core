@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 4096
@@ -121,7 +121,7 @@ char	*get_next_line(int fd)
 	char			*next_line;
 	t_newline		*line;
 
-	if (fd < 0 || fd > 4095 || BUFFER_SIZE <= 0 || read(fd, &next_line, 0) < 0)
+	if (fd < 0 || fd > 4095 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = malloc(sizeof(t_newline));
 	if (!line)
