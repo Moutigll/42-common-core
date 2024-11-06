@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:02:10 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/06 11:34:43 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/06 13:42:02 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,3 +41,5 @@ struct circular_list	*insert_circular(struct circular_list *previous, int value)
 void					presort_bubblesorthehe(struct sorted_list *list);
 void					free_list(struct sorted_list *list);
 void					free_stack(t_stack *stack);
+int						push_b(t_stack *stack_a, t_stack *stack_b);
+int						push_a(t_stack *stack_a, t_stack *stack_b);
