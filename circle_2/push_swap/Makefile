@@ -3,7 +3,7 @@ CFLAGS = -Wall -Werror -Wextra -I include -I libft/include
 NAME = pushswap
 SRC_DIR = src
 
-PUSH_SWAP_SRCS = push_swap.c list_utils.c operations.c
+PUSH_SWAP_SRCS = push_swap.c list_utils.c stack_a_operations.c stack_b_operations.c
 PUSH_SWAP_OBJS = $(addprefix $(SRC_DIR)/, $(PUSH_SWAP_SRCS:.c=.o))
 
 LIBFT = libft/libft.a
