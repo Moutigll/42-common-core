@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:10:59 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/06 13:42:40 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/08 08:24:33 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ struct sorted_list	*append_sorted(struct sorted_list *previous, int value)
 	return (new);
 }
 
-struct circular_list	*insert_circular(struct circular_list *previous, int value)
+struct circular_list	*insert_circular(struct circular_list *previous,
+							int value)
 {
 	struct circular_list	*new;
 

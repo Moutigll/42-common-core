@@ -3,46 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moutig <moutig@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 11:21:05 by moutig            #+#    #+#             */
-/*   Updated: 2024/11/07 12:05:13 by moutig           ###   ########.fr       */
+/*   Updated: 2024/11/08 09:43:42 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void print_stacks(t_stack *stack_a, t_stack *stack_b)
+void	print_stacka(t_clist *next, int nextb_value)
+{
+	int		next_value;
+	int		next_prev_value;
+	int		next_next_value;
+
+	next_value = 0;
+	next_prev_value = 0;
+	next_next_value = 0;
+	if (next)
+	{
+		next_value = next->value;
+		next_prev_value = next->prev->value;
+		next_next_value = next->next->value;
+	}
+	ft_printf("Stack A:%2d | Stack B:%2d  (A prev:%2d | next:%2d)",
+		next_value, nextb_value, next_prev_value,
+		next_next_value);
+}
+
+void	print_stacks2(t_clist *next, t_clist *nextb, int nextb_next_value)
+{
+	int		nextb_value;
+	int		nextb_prev_value;
+
+	nextb_value = 0;
+	nextb_prev_value = 0;
+	if (nextb)
+	{
+		nextb_value = nextb->value;
+		nextb_prev_value = nextb->prev->value;
+		nextb_next_value = nextb->next->value;
+	}
+	print_stacka(next, nextb_value);
+	ft_printf("(B prev:%2d | next:%2d)\n",
+		nextb_prev_value, nextb_next_value);
+}
+
+void	print_stacks(t_stack *stack_a, t_stack *stack_b)
 {
 	t_clist	*next;
 	t_clist	*nextb;
 	int		i;
+	int		nextb_next_value;
 
 	next = stack_a->head;
 	nextb = stack_b->head;
 	i = 0;
-	ft_printf("------BEGINING OF STACKS-----\n");
+	ft_printf("------BEGINNING OF STACKS-----\n");
 	ft_printf("   A Size:%3d |   B Size:%3d\n", stack_a->size, stack_b->size);
-	do
+	while (next || nextb)
 	{
-		ft_printf("Stack A:%2d | Stack B:%2d  (A prev:%2d | next:%2d) (B prev:%2d | next:%2d)\n",
-			next ? next->value : 0,
-			nextb ? nextb->value : 0,
-			next ? next->prev->value : 0,
-			next ? next->next->value : 0,
-			nextb ? nextb->prev->value : 0,
-			nextb ? nextb->next->value : 0);
-		
+		nextb_next_value = 0;
+		print_stacks2(next, nextb, nextb_next_value);
 		i++;
 		if (next && i < stack_a->size)
 			next = next->next;
 		else
-			next = 0;
+			next = NULL;
 		if (nextb && i < stack_b->size)
 			nextb = nextb->next;
 		else
-			nextb = 0;
-	} while (i < stack_a->size || i < stack_b->size);
+			nextb = NULL;
+	}
 	ft_printf("--------END OF STACKS--------\n\n");
 }
 
@@ -57,92 +90,16 @@ void	run_tests(struct sorted_list *next, t_stack *stack_a, t_stack *stack_b)
 		next = next->next;
 	}
 	ft_printf("\n\n----------Stacks tests----------\n\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	// Test cases to cover all possible combinations of push_a and push_b
-	// Initial stack_a: [1, 2, 3, 4, 5], stack_b: []
-
-	// Push all elements from stack_a to stack_b
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-
-	// Push all elements back from stack_b to stack_a
-	push_a(stack_a, stack_b);
-	ft_printf("Pushed A\n");
-	print_stacks(stack_a, stack_b);
-	push_a(stack_a, stack_b);
-	ft_printf("Pushed A\n");
-	print_stacks(stack_a, stack_b);
-	push_a(stack_a, stack_b);
-	ft_printf("Pushed A\n");
-	print_stacks(stack_a, stack_b);
-	push_a(stack_a, stack_b);
-	ft_printf("Pushed A\n");
-	print_stacks(stack_a, stack_b);
-	push_a(stack_a, stack_b);
-	ft_printf("Pushed A\n");
-	print_stacks(stack_a, stack_b);
-
-	// Push some elements to stack_b and then back to stack_a
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_a(stack_a, stack_b);
-	ft_printf("Pushed A\n");
-	print_stacks(stack_a, stack_b);
-	push_a(stack_a, stack_b);
-	ft_printf("Pushed A\n");
-	print_stacks(stack_a, stack_b);
-
-	// Push all elements to stack_b and then push some back to stack_a
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_b(stack_a, stack_b);
-	ft_printf("Pushed B\n");
-	print_stacks(stack_a, stack_b);
-	push_a(stack_a, stack_b);
-	ft_printf("Pushed A\n");
-	print_stacks(stack_a, stack_b);
-	push_a(stack_a, stack_b);
-	ft_printf("Pushed A\n");
-	print_stacks(stack_a, stack_b);
+	ft_printf("\n\n\nPush tests:\n\n\n");
+	push_tests(stack_a, stack_b);
+	ft_printf("\n\n\nSwap tests:\n\n\n");
+	swap_tests(stack_a, stack_b);
+	rotate_tests(stack_a, stack_b);
 }
 #else
-void	run_tests(struct sorted_list *next, t_stack *stack_a, t_stack *stack_b)
+
+void	run_tests(struct sorted_list *next,
+		t_stack *stack_a, t_stack *stack_b)
 {
 	(void)next;
 	(void)stack_a;

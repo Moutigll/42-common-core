@@ -4,10 +4,10 @@ NAME = push_swap
 SRC_DIR = src
 TEST_DIR = tests
 
-PUSH_SWAP_SRCS = push_swap.c list_utils.c stack_a_operations.c stack_b_operations.c
+PUSH_SWAP_SRCS = push_swap.c list_utils.c stack_operations.c get_cost.c
 PUSH_SWAP_OBJS = $(addprefix $(SRC_DIR)/, $(PUSH_SWAP_SRCS:.c=.o))
 
-TEST_SRCS = main.c
+TEST_SRCS = main.c push_tests.c swap_tests.c rotate_tests.c
 TEST_OBJS = $(addprefix $(TEST_DIR)/, $(TEST_SRCS:.c=.o))
 
 LIBFT = libft/libft.a

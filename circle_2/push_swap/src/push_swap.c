@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moutig <moutig@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:01:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/07 12:05:45 by moutig           ###   ########.fr       */
+/*   Updated: 2024/11/08 11:25:01 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ int	main(int argc, char **argv)
 	next = presorted;
 	presort_bubblesorthehe(presorted);
 	run_tests(next, stack_a, stack_b);
+	ft_printf("pb\npb\n");
+	push_stack(stack_a, stack_b);
+	push_stack(stack_a, stack_b);
+	while (stack_a->size > 3)
+	{
+		get_best_cost(stack_a, stack_b);
+	}
 	free_list(presorted);
 	free_stack(stack_a);
 	free_stack(stack_b);

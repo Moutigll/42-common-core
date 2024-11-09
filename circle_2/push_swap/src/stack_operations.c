@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_b_operations.c                               :+:      :+:    :+:   */
+/*   stack_operations.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moutig <moutig@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 13:37:55 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/07 11:07:20 by moutig           ###   ########.fr       */
+/*   Created: 2024/11/06 13:37:20 by ele-lean          #+#    #+#             */
+/*   Updated: 2024/11/08 06:59:47 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	push_b(t_stack *stack_a, t_stack *stack_b)
+int	push_stack(t_stack *stack_a, t_stack *stack_b)
 {
 	t_clist	*temp;
 
@@ -46,33 +46,30 @@ int	push_b(t_stack *stack_a, t_stack *stack_b)
 	return (1);
 }
 
-int	swap_b(t_stack *stack_b)
+int	swap_stack(t_stack *stack)
 {
-	t_clist	*temp;
+	int	temp;
 
-	if (!stack_b->head || !stack_b->head->next)
+	if (!stack->head || !stack->head->prev)
 		return (0);
-	temp = stack_b->head;
-	stack_b->head = stack_b->head->next;
-	temp->next = stack_b->head->next;
-	stack_b->head->next = temp;
-	stack_b->head->prev = temp->prev;
-	temp->prev = stack_b->head;
+	temp = stack->head->value;
+	stack->head->value = stack->head->next->value;
+	stack->head->next->value = temp;
 	return (1);
 }
 
-int	rotate_b(t_stack *stack_b)
+int	rotate_stack(t_stack *stack)
 {
-	if (!stack_b->head || !stack_b->head->next)
+	if (!stack->head || !stack->head->prev)
 		return (0);
-	stack_b->head = stack_b->head->next;
+	stack->head = stack->head->next;
 	return (1);
 }
 
-int reverse_rotate_b(t_stack *stack_b)
+int	reverse_rotate_stack(t_stack *stack)
 {
-	if (!stack_b->head || !stack_b->head->next)
+	if (!stack->head || !stack->head->prev)
 		return (0);
-	stack_b->head = stack_b->head->prev;
+	stack->head = stack->head->prev;
 	return (1);
 }
