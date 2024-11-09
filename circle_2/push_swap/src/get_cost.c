@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:54:49 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/08 14:44:54 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/09 11:44:58 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,22 @@ int	is_min_or_max(t_stack *stack, int number)
 
 	next = stack->head->next;
 	i = 0;
-	while (next != stack->head && next->value > number)
+	while (next != stack->head && next->value >= number)
 	{
 		next = next->next;
 		i++;
 	}
-
-	if (i == stack->size - 1 && stack->head->value > number)
-	{
+	if (i == stack->size - 1 && stack->head->value >= number)
 		return (1);
-	}
 	next = stack->head->next;
 	i = 0;
-	while (next != stack->head && next->value < number)
+	while (next != stack->head && next->value <= number)
 	{
 		next = next->next;
 		i++;
 	}
-
-	if (i == stack->size - 1 && stack->head->value < number)
-	{
+	if (i == stack->size - 1 && stack->head->value <= number)
 		return (2);
-	}
 	return (0);
 }
 
@@ -57,16 +51,19 @@ t_costb	*get_stackb_cost(int number, t_stack *stack_b)
 	cost = (t_costb *)malloc(sizeof(t_costb));
 	while (i < stack_b->size)
 	{
-		if (next->value > number && next->next->value < number)
+	//	if (number == 14)
+	//		ft_printf("Is min or max number:%d | Next->next->value:%d | Is min or max next->next->value:%d\n",
+		//		is_min_or_max(stack_b, number), next->next->value, is_min_or_max(stack_b, next->next->value));
+		if (is_min_or_max(stack_b, number) == 0 && next->value > number && next->next->value < number)
 			break ;
-		if (min_or_max == 1 && next->value > next->next->value && next->next->next->value > next->next->value)
+		if (is_min_or_max(stack_b, number) == 1 && is_min_or_max(stack_b, next->value) == 1)
 			break ;
-		if (min_or_max == 2 && next->value < next->next->value && next->value < next->prev->value)
+		if (is_min_or_max(stack_b, number) == 2 && is_min_or_max(stack_b, next->next->value) == 2)
 			break ;
 		next = next->next;
 		i++;
 	}
-	if (i < stack_b->size / 2)
+	if (i <= stack_b->size / 2)
 	{
 		cost->type = 0;
 		cost->value = i;
@@ -76,15 +73,19 @@ t_costb	*get_stackb_cost(int number, t_stack *stack_b)
 		cost->type = 1;
 		cost->value = stack_b->size - i;
 	}
-	//ft_printf("Stack_B size: %d | I%d\n", stack_b->size, i);
+	//ft_printf("Number %d | Stack_B size: %d | Btype: %d | Bvalue: %d | I: %d\n",
+		//number, stack_b->size, cost->type, cost->value, i);
 	return (cost);
 }
 
 t_total_cost	*init_total_cost(void)
 {
+
 	t_total_cost	*cost;
 
 	cost = (t_total_cost *)malloc(sizeof(t_total_cost));
+	if (!cost)
+		return (NULL);
 	cost->ra = 0;
 	cost->rb = 0;
 	cost->rra = 0;
@@ -98,6 +99,18 @@ t_total_cost	*init_total_cost(void)
 
 void	get_operations_string(t_total_cost *best,	t_stack *stack_a, t_stack *stack_b)
 {
+//	ft_printf("Best: %d | ra: %d | rb: %d | rra: %d | rrb: %d | rr: %d | rrr: %d | total: %d\n",
+//		best->total, best->ra, best->rb, best->rra, best->rrb, best->rr, best->rrr, best->total);
+	for (int i = 0; i < best->rr; i++) {
+		ft_printf("rr\n");
+		rotate_stack(stack_a);
+		rotate_stack(stack_b);
+	}
+	for (int i = 0; i < best->rrr; i++) {
+		ft_printf("rrr\n");
+		reverse_rotate_stack(stack_a);
+		reverse_rotate_stack(stack_b);
+	}
 	for (int i = 0; i < best->ra; i++) {
 		ft_printf("ra\n");
 		rotate_stack(stack_a);
@@ -106,22 +119,12 @@ void	get_operations_string(t_total_cost *best,	t_stack *stack_a, t_stack *stack_
 		ft_printf("rb\n");
 		rotate_stack(stack_b);
 	}
-	for (int i = 0; i < best->rr; i++) {
-		ft_printf("rr\n");
-		rotate_stack(stack_a);
-		rotate_stack(stack_b);
-	}
 	for (int i = 0; i < best->rra; i++) {
 		ft_printf("rra\n");
 		reverse_rotate_stack(stack_a);
 	}
 	for (int i = 0; i < best->rrb; i++) {
 		ft_printf("rrb\n");
-		reverse_rotate_stack(stack_b);
-	}
-	for (int i = 0; i < best->rrr; i++) {
-		ft_printf("rrr\n");
-		reverse_rotate_stack(stack_a);
 		reverse_rotate_stack(stack_b);
 	}
 	ft_printf("pb\n");
@@ -153,15 +156,18 @@ void	get_best_cost(t_stack *stack_a, t_stack *stack_b)
 	t_costb			*costb;
 	t_total_cost	*cost_list;
 	t_total_cost	*cost;
+	int				best;
 
 	i = 0;
 	next = stack_a->head;
 	cost = init_total_cost();
 	cost_list = cost;
+	best = 100000;
 	while (i < stack_a->size)
 	{
 		costb = get_stackb_cost(next->value, stack_b);
-		if (costb->type == 0 && i < stack_a->size / 2)
+		
+		if (costb->type == 0 && i <= stack_a->size / 2)
 		{
 			if (costb->value < i)
 			{
@@ -174,18 +180,17 @@ void	get_best_cost(t_stack *stack_a, t_stack *stack_b)
 				cost->rb = costb->value - i;
 			}
 		}
-		else if (costb->type == 0 && i >= stack_a->size / 2)
+		else if (costb->type == 0 && i > stack_a->size / 2)
 		{
 			cost->rb = costb->value;
 			cost->rra = stack_a->size - i;
-			
 		}
-		else if (costb->type == 1 && i < stack_a->size / 2)
+		else if (costb->type == 1 && i <= stack_a->size / 2)
 		{
-			cost->rra = i;
+			cost->ra = i;
 			cost->rrb = costb->value;
 		}
-		else if (costb->type == 1 && i >= stack_a->size / 2)
+		else if (costb->type == 1 && i > stack_a->size / 2)
 		{
 			if (costb->value < stack_a->size - i)
 			{
@@ -200,9 +205,14 @@ void	get_best_cost(t_stack *stack_a, t_stack *stack_b)
 		}
 		cost->total = cost->ra + cost->rb + cost->rr + cost->rra
 			+ cost->rrb + cost->rrr + 1;
-	//	ft_printf("Next: %d | Stack B type: %d | Bvalue: %d | Total cost: %d\n",
-		//	next->value, costb->type, costb->value, cost->total); 
+	//	ft_printf("Next: %d | cost rrr: %d | cost rra: %d | cost rrb: %d | cost ra: %d | cost rb: %d | cost rr: %d | cost rrr: %d | total: %d\n",
+		//	next->value, cost->rrr, cost->rra, cost->rrb, cost->ra, cost->rb, cost->rr, cost->rrr, cost->total);
+		if (cost->total < best)
+			best = cost->total;
 		cost->next = init_total_cost();
+		if (cost->total < 3)
+			break ;
+		free(costb);
 		cost = cost->next;
 		next = next->next;
 		i++;

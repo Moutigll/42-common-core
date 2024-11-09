@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:01:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/08 11:25:01 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/09 10:06:03 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,26 @@ int	main(int argc, char **argv)
 	ft_printf("pb\npb\n");
 	push_stack(stack_a, stack_b);
 	push_stack(stack_a, stack_b);
+	if (stack_b->head->value < stack_b->head->next->value)
+	{
+		ft_printf("sb\n");
+		swap_stack(stack_b);
+	}
+	if (stack_a->head->value < stack_b->head->value && stack_a->head->value > stack_b->head->next->value)
+	{
+		ft_printf("rb\n");
+		rotate_stack(stack_b);
+		ft_printf("pb\n");
+		push_stack(stack_a, stack_b);
+		ft_printf("sb\nrrb\n");
+		swap_stack(stack_b);
+		reverse_rotate_stack(stack_b);
+	}
+	else
+	{
+		ft_printf("pb\n");
+		push_stack(stack_a, stack_b);
+	}
 	while (stack_a->size > 3)
 	{
 		get_best_cost(stack_a, stack_b);
