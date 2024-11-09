@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:02:10 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/08 11:35:01 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/09 12:59:18 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,7 @@ void					push_tests(t_stack *stack_a, t_stack *stack_b);
 void					swap_tests(t_stack *stack_a, t_stack *stack_b);
 void					print_stacks(t_stack *stack_a, t_stack *stack_b);
 void					rotate_tests(t_stack *stack_a, t_stack *stack_b);
+
+// Cost functions
 void					get_best_cost(t_stack *stack_a, t_stack *stack_b);
+int						is_min_or_max(t_stack *stack, int number);
