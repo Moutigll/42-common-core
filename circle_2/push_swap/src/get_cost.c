@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:54:49 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/09 11:44:58 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/09 12:42:50 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,6 @@ t_costb	*get_stackb_cost(int number, t_stack *stack_b)
 	cost = (t_costb *)malloc(sizeof(t_costb));
 	while (i < stack_b->size)
 	{
-	//	if (number == 14)
-	//		ft_printf("Is min or max number:%d | Next->next->value:%d | Is min or max next->next->value:%d\n",
-		//		is_min_or_max(stack_b, number), next->next->value, is_min_or_max(stack_b, next->next->value));
 		if (is_min_or_max(stack_b, number) == 0 && next->value > number && next->next->value < number)
 			break ;
 		if (is_min_or_max(stack_b, number) == 1 && is_min_or_max(stack_b, next->value) == 1)
@@ -73,8 +70,6 @@ t_costb	*get_stackb_cost(int number, t_stack *stack_b)
 		cost->type = 1;
 		cost->value = stack_b->size - i;
 	}
-	//ft_printf("Number %d | Stack_B size: %d | Btype: %d | Bvalue: %d | I: %d\n",
-		//number, stack_b->size, cost->type, cost->value, i);
 	return (cost);
 }
 
@@ -99,8 +94,6 @@ t_total_cost	*init_total_cost(void)
 
 void	get_operations_string(t_total_cost *best,	t_stack *stack_a, t_stack *stack_b)
 {
-//	ft_printf("Best: %d | ra: %d | rb: %d | rra: %d | rrb: %d | rr: %d | rrr: %d | total: %d\n",
-//		best->total, best->ra, best->rb, best->rra, best->rrb, best->rr, best->rrr, best->total);
 	for (int i = 0; i < best->rr; i++) {
 		ft_printf("rr\n");
 		rotate_stack(stack_a);
@@ -129,12 +122,14 @@ void	get_operations_string(t_total_cost *best,	t_stack *stack_a, t_stack *stack_
 	}
 	ft_printf("pb\n");
 	push_stack(stack_a, stack_b);
+	free(best);
 }
 
 void	extract_best_cost(t_total_cost *cost_list, t_stack *stack_a, t_stack *stack_b)
 {
 	t_total_cost	*best;
 	t_total_cost	*current;
+	t_total_cost	*temp;
 
 	best = cost_list;
 	current = cost_list->next;
@@ -142,7 +137,13 @@ void	extract_best_cost(t_total_cost *cost_list, t_stack *stack_a, t_stack *stack
 	{
 		if (current->total < best->total && current->total != 0)
 		{
+			free(best);
 			best = current;
+		}
+		else
+		{
+			temp = current;
+			free(temp);
 		}
 		current = current->next;
 	}
@@ -165,54 +166,55 @@ void	get_best_cost(t_stack *stack_a, t_stack *stack_b)
 	best = 100000;
 	while (i < stack_a->size)
 	{
-		costb = get_stackb_cost(next->value, stack_b);
-		
-		if (costb->type == 0 && i <= stack_a->size / 2)
+		if (i < best || stack_a->size - i < best)
 		{
-			if (costb->value < i)
+			costb = get_stackb_cost(next->value, stack_b);
+			if (costb->type == 0 && i <= stack_a->size / 2)
 			{
-				cost->rr = costb->value;
-				cost->ra = i - costb->value;
+				if (costb->value < i)
+				{
+					cost->rr = costb->value;
+					cost->ra = i - costb->value;
+				}
+				else
+				{
+					cost->rr = i;
+					cost->rb = costb->value - i;
+				}
 			}
-			else
+			else if (costb->type == 0 && i > stack_a->size / 2)
 			{
-				cost->rr = i;
-				cost->rb = costb->value - i;
+				cost->rb = costb->value;
+				cost->rra = stack_a->size - i;
 			}
-		}
-		else if (costb->type == 0 && i > stack_a->size / 2)
-		{
-			cost->rb = costb->value;
-			cost->rra = stack_a->size - i;
-		}
-		else if (costb->type == 1 && i <= stack_a->size / 2)
-		{
-			cost->ra = i;
-			cost->rrb = costb->value;
-		}
-		else if (costb->type == 1 && i > stack_a->size / 2)
-		{
-			if (costb->value < stack_a->size - i)
+			else if (costb->type == 1 && i <= stack_a->size / 2)
 			{
-				cost->rrr = costb->value;
-				cost->rra = stack_a->size - i - costb->value;
+				cost->ra = i;
+				cost->rrb = costb->value;
 			}
-			else
+			else if (costb->type == 1 && i > stack_a->size / 2)
 			{
-				cost->rrr = stack_a->size - i;
-				cost->rrb = costb->value - (stack_a->size - i);
+				if (costb->value < stack_a->size - i)
+				{
+					cost->rrr = costb->value;
+					cost->rra = stack_a->size - i - costb->value;
+				}
+				else
+				{
+					cost->rrr = stack_a->size - i;
+					cost->rrb = costb->value - (stack_a->size - i);
+				}
 			}
+			cost->total = cost->ra + cost->rb + cost->rr + cost->rra + cost->rrb + cost->rrr + 1;
+			if (cost->total < best)
+				best = cost->total;
+			free(costb);
 		}
-		cost->total = cost->ra + cost->rb + cost->rr + cost->rra
-			+ cost->rrb + cost->rrr + 1;
-	//	ft_printf("Next: %d | cost rrr: %d | cost rra: %d | cost rrb: %d | cost ra: %d | cost rb: %d | cost rr: %d | cost rrr: %d | total: %d\n",
-		//	next->value, cost->rrr, cost->rra, cost->rrb, cost->ra, cost->rb, cost->rr, cost->rrr, cost->total);
-		if (cost->total < best)
-			best = cost->total;
+		else
+			cost->total = 100000;
 		cost->next = init_total_cost();
 		if (cost->total < 3)
 			break ;
-		free(costb);
 		cost = cost->next;
 		next = next->next;
 		i++;
