@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:01:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 13:09:57 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/10 14:41:55 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	main(int argc, char **argv)
 	bubblesort(presorted);
 	if (stack_a->size < 4)
 	{
-		if (stack_a->size == 2 && stack_a->head->value > stack_a->head->next->value)
+		if (stack_a->size == 2 && stack_a->head->value
+			> stack_a->head->next->value)
 			swap_stack(stack_a, "sa");
 		if (stack_a->size == 3)
 			handle_len3(stack_a);
@@ -57,7 +58,8 @@ int	main(int argc, char **argv)
 	push_stack(stack_a, stack_b, "pb");
 	if (stack_b->head->value < stack_b->head->next->value)
 		swap_stack(stack_b, "sb");
-	if (stack_a->head->value < stack_b->head->value && stack_a->head->value > stack_b->head->next->value)
+	if (stack_a->head->value < stack_b->head->value
+		&& stack_a->head->value > stack_b->head->next->value)
 	{
 		rotate_stack(stack_b, "rb");
 		push_stack(stack_a, stack_b, "pb");
@@ -73,7 +75,8 @@ int	main(int argc, char **argv)
 	handle_len3(stack_a);
 	if (is_min_or_max(stack_b, stack_b->head->value) != 2)
 	{
-		if (stack_b->head->value < stack_a->head->prev->value && stack_b->head->value > stack_a->head->prev->prev->value)
+		if (stack_b->head->value < stack_a->head->prev->value
+			&& stack_b->head->value > stack_a->head->prev->prev->value)
 		{
 			reverse_rotate_stack(stack_a, "rra");
 			push_stack(stack_b, stack_a, "pa");
@@ -86,9 +89,13 @@ int	main(int argc, char **argv)
 		if (stack_a->head->value > stack_a->head->next->value)
 			swap_stack(stack_a, "sa");
 	}
-	while (stack_b->size > 0 || is_min_or_max(stack_a, stack_a->head->prev->value) != 2)
+	while (stack_b->size > 0
+		|| is_min_or_max(stack_a, stack_a->head->prev->value) != 2)
 	{
-		while ((stack_a->head->prev->value > stack_b->head->value && is_min_or_max(stack_a, stack_a->head->prev->value) != 2) || (stack_a->head->prev->value > stack_b->head->value && stack_a->size == 3))
+		while ((stack_a->head->prev->value > stack_b->head->value
+				&& is_min_or_max(stack_a, stack_a->head->prev->value) != 2)
+			|| (stack_a->head->prev->value > stack_b->head->value
+				&& stack_a->size == 3))
 			reverse_rotate_stack(stack_a, "rra");
 		if (stack_b->size > 0)
 			push_stack(stack_b, stack_a, "pa");
@@ -98,3 +105,4 @@ int	main(int argc, char **argv)
 	free_stack(stack_b);
 	return (0);
 }
+

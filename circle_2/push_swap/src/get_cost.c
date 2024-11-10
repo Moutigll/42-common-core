@@ -6,60 +6,40 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:54:49 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 13:30:10 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/10 15:11:32 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+// Return 1 if number is the smallest n stack, 
+// 2 if number is the biggest and 0 otherwise
 int	is_min_or_max(t_stack *stack, int number)
 {
 	t_clist	*next;
-	int		i;
 
 	next = stack->head->next;
-	i = 0;
 	while (next != stack->head && next->value >= number)
-	{
 		next = next->next;
-		i++;
-	}
-	if (i == stack->size - 1 && stack->head->value >= number)
+	if (stack->head == next && stack->head->value >= number)
 		return (1);
 	next = stack->head->next;
-	i = 0;
 	while (next != stack->head && next->value <= number)
-	{
 		next = next->next;
-		i++;
-	}
-	if (i == stack->size - 1 && stack->head->value <= number)
+	if (stack->head == next && stack->head->value <= number)
 		return (2);
 	return (0);
 }
 
-t_costb	*get_stackb_cost(int number, t_stack *stack_b)
+// If the position is before the middle of the stack, return the cost in rb
+// Otherwise return the cost in rrb
+t_costb	*compute_stackb_cost(t_stack *stack_b, int i)
 {
-	int		i;
 	t_costb	*cost;
-	t_clist	*next;
-	int		min_or_max;
 
-	i = 1;
-	next = stack_b->head;
-	min_or_max = is_min_or_max(stack_b, number);
 	cost = (t_costb *)malloc(sizeof(t_costb));
-	while (i < stack_b->size)
-	{
-		if (is_min_or_max(stack_b, number) == 0 && next->value > number && next->next->value < number)
-			break ;
-		if (is_min_or_max(stack_b, number) == 1 && is_min_or_max(stack_b, next->value) == 1)
-			break ;
-		if (is_min_or_max(stack_b, number) == 2 && is_min_or_max(stack_b, next->next->value) == 2)
-			break ;
-		next = next->next;
-		i++;
-	}
+	if (!cost)
+		return (NULL);
 	if (i <= stack_b->size / 2)
 	{
 		cost->type = 0;
@@ -71,6 +51,38 @@ t_costb	*get_stackb_cost(int number, t_stack *stack_b)
 		cost->value = stack_b->size - i;
 	}
 	return (cost);
+}
+
+/*
+	Scan the list to find the place where the number would be considered sorted
+	Always sort in descending order and breaks if sorted to get position with i
+	If the number is a new minimum or maximum we instead look for the previous
+	Max or Min. For Max we check the next position from index to keep descending
+*/
+t_costb	*get_stackb_cost(int number, t_stack *stack_b)
+{
+	int		i;
+	t_clist	*next;
+	int		min_or_max;
+
+	i = 1;
+	next = stack_b->head;
+	min_or_max = is_min_or_max(stack_b, number);
+	while (i < stack_b->size)
+	{
+		if (min_or_max == 0 && next->value > number
+			&& next->next->value < number)
+			break ;
+		if (min_or_max == 1
+			&& is_min_or_max(stack_b, next->value) == 1)
+			break ;
+		if (min_or_max == 2
+			&& is_min_or_max(stack_b, next->next->value) == 2)
+			break ;
+		next = next->next;
+		i++;
+	}
+	return (compute_stackb_cost(stack_b, i));
 }
 
 // init total cost structure used to keep cost to sort each number
