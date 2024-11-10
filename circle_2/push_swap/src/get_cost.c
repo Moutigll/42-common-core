@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:54:49 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/09 12:42:50 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/10 13:30:10 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ t_costb	*get_stackb_cost(int number, t_stack *stack_b)
 	return (cost);
 }
 
+// init total cost structure used to keep cost to sort each number
 t_total_cost	*init_total_cost(void)
 {
-
 	t_total_cost	*cost;
 
 	cost = (t_total_cost *)malloc(sizeof(t_total_cost));
@@ -92,40 +92,34 @@ t_total_cost	*init_total_cost(void)
 	return (cost);
 }
 
-void	get_operations_string(t_total_cost *best,	t_stack *stack_a, t_stack *stack_b)
+// Perform n times the function f with the parameters provided
+void	print_loop(int (*f)(t_stack *, void *), t_stack *param1, void *param2, int n)
 {
-	for (int i = 0; i < best->rr; i++) {
-		ft_printf("rr\n");
-		rotate_stack(stack_a);
-		rotate_stack(stack_b);
+	int i = 0;
+	while (i < n)
+	{
+		f(param1, param2);
+		i++;
 	}
-	for (int i = 0; i < best->rrr; i++) {
-		ft_printf("rrr\n");
-		reverse_rotate_stack(stack_a);
-		reverse_rotate_stack(stack_b);
-	}
-	for (int i = 0; i < best->ra; i++) {
-		ft_printf("ra\n");
-		rotate_stack(stack_a);
-	}
-	for (int i = 0; i < best->rb; i++) {
-		ft_printf("rb\n");
-		rotate_stack(stack_b);
-	}
-	for (int i = 0; i < best->rra; i++) {
-		ft_printf("rra\n");
-		reverse_rotate_stack(stack_a);
-	}
-	for (int i = 0; i < best->rrb; i++) {
-		ft_printf("rrb\n");
-		reverse_rotate_stack(stack_b);
-	}
-	ft_printf("pb\n");
-	push_stack(stack_a, stack_b);
+}
+
+
+// Use the print_loop above to perform each stack operations according to best
+void	get_operations_string(t_total_cost *best,	t_stack *stack_a,
+			t_stack *stack_b)
+{
+	print_loop(rotate_both, stack_a, stack_b, best->rr);
+	print_loop(reverse_rotate_both, stack_a, stack_b, best->rrr);
+	print_loop(rotate_stack, stack_a, "ra", best->ra);
+	print_loop(rotate_stack, stack_b, "rb", best->rb);
+	print_loop(reverse_rotate_stack, stack_a, "rra", best->rra);
+	print_loop(reverse_rotate_stack, stack_b, "rrb", best->rrb);
+	push_stack(stack_a, stack_b, "pb");
 	free(best);
 }
 
-void	extract_best_cost(t_total_cost *cost_list, t_stack *stack_a, t_stack *stack_b)
+void	extract_best_cost(t_total_cost *cost_list, t_stack *stack_a,
+			t_stack *stack_b)
 {
 	t_total_cost	*best;
 	t_total_cost	*current;
