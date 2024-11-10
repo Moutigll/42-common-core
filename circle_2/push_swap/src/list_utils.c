@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:10:59 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 14:37:10 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/10 18:17:30 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ struct circular_list	*insert_circular(struct circular_list *previous,
 		return (NULL);
 	new->value = value;
 	if (!previous)
-	{
 		return (insert_empty(new));
-	}
 	if (previous->next == previous)
 	{
 		previous->next = new;
