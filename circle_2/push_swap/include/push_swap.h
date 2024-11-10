@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:02:10 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 16:18:46 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/10 20:15:28 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,11 @@ t_costb					*get_stackb_cost(int number, t_stack *stack_b);
 void					print_operations_string(t_total_cost *best,
 							t_stack *stack_a, t_stack *stack_b);
 
-// Functions to check sorting and sort small lists
+// Functions to check sorting and sort
 void					handle_len3(t_stack *stack_a);
 void					bubblesort(struct sorted_list *list);
+void					sort_stacks(struct sorted_list *presorted,
+							t_stack *stack_a, t_stack *stack_b);
 
 // Tests functions
 void					run_tests(struct sorted_list *next,

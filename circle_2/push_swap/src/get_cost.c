@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:54:49 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 18:50:40 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/10 20:21:57 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,11 @@ void	compute_total_cost2(t_total_cost *cost,
 	}
 }
 
-void	compute_total_cost(t_total_cost *cost,
-			t_costb *costb, t_stack *stack_a, int i)
+void	compute_total_cost(t_total_cost *cost, t_stack *stack_a, int i, t_clist *next, t_stack *stack_b)
 {
+	t_costb			*costb;
+
+	costb = get_stackb_cost(next->value, stack_b);
 	compute_total_cost2(cost, costb, stack_a, i);
 	if (costb->type == 1 && i > stack_a->size / 2)
 	{
@@ -100,13 +102,15 @@ void	compute_total_cost(t_total_cost *cost,
 			cost->rrb = costb->value - (stack_a->size - i);
 		}
 	}
+	cost->total = cost->ra + cost->rb + cost->rr
+		+ cost->rra + cost->rrb + cost->rrr + 1;
+	free(costb);
 }
 
 void	get_best_cost(t_stack *stack_a, t_stack *stack_b)
 {
 	int				i;
 	t_clist			*next;
-	t_costb			*costb;
 	t_total_cost	*cost_list;
 	t_total_cost	*cost;
 	int				best;
@@ -120,13 +124,9 @@ void	get_best_cost(t_stack *stack_a, t_stack *stack_b)
 	{
 		if (i < best || stack_a->size - i < best || best == -1)
 		{
-			costb = get_stackb_cost(next->value, stack_b);
-			compute_total_cost(cost, costb, stack_a, i);
-			cost->total = cost->ra + cost->rb + cost->rr
-				+ cost->rra + cost->rrb + cost->rrr + 1;
+			compute_total_cost(cost, stack_a, i, next, stack_b);
 			if (cost->total < best || best == -1)
 				best = cost->total;
-			free(costb);
 		}
 		else
 			cost->total = 100000;

@@ -4,7 +4,7 @@ NAME = push_swap
 SRC_DIR = src
 TEST_DIR = tests
 
-PUSH_SWAP_SRCS = push_swap.c list_utils.c sorting_utils.c stack_operations.c stack_operations_both.c get_cost.c get_cost_utils.c
+PUSH_SWAP_SRCS = push_swap.c list_utils.c sorting_utils.c stack_operations.c stack_operations_both.c get_cost.c get_cost_utils.c sort_stacks.c
 PUSH_SWAP_OBJS = $(addprefix $(SRC_DIR)/, $(PUSH_SWAP_SRCS:.c=.o))
 
 TEST_SRCS = main.c push_tests.c swap_tests.c rotate_tests.c
