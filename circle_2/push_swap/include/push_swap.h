@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:02:10 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 20:15:28 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/11 17:21:32 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,15 @@ typedef struct s_total_cost
 	struct s_total_cost	*next;
 }				t_total_cost;
 
+// Cause 4 args is the limit :(
+typedef struct s_args
+{
+	int				i;
+	t_clist			*next;
+	t_total_cost	*cost_list;
+	t_total_cost	*cost;
+}		t_args;
+
 // List manipulation
 struct sorted_list		*append_sorted(struct sorted_list *previous, int value);
 struct circular_list	*insert_circular(struct circular_list
@@ -81,6 +90,7 @@ int						is_min_or_max(t_stack *stack, int number);
 t_costb					*get_stackb_cost(int number, t_stack *stack_b);
 void					print_operations_string(t_total_cost *best,
 							t_stack *stack_a, t_stack *stack_b);
+t_total_cost			*init_total_cost(void);
 
 // Functions to check sorting and sort
 void					handle_len3(t_stack *stack_a);

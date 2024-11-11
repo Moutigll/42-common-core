@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:01:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 20:25:54 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/11 17:31:47 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,34 @@ struct sorted_list	*init_lists(t_stack *stack_a,
 	return (presorted);
 }
 
+int	check_args(int argc, char **argv)
+{
+	int	i;
+	int	j;
+
+	if (argc < 2)
+		return (1);
+	i = 1;
+	while (i < argc)
+	{
+		j = i + 1;
+		while (j < argc)
+		{
+			if (ft_atoi(argv[i]) == ft_atoi(argv[j]))
+				return ((write(2, "Error\n", 6)), 1);
+			j++;
+		}
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	struct sorted_list	*presorted;
 	t_stack				*stack_a;
 	t_stack				*stack_b;
 
-	if (argc < 2)
+	if (check_args(argc, argv) == 1)
 		return (0);
 	stack_a = (t_stack *)malloc(sizeof(t_stack));
 	stack_b = (t_stack *)malloc(sizeof(t_stack));

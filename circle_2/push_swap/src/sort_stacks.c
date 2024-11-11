@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:14:07 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 20:42:04 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/11 15:25:43 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	sort3(struct sorted_list *presorted, t_stack *stack_a, t_stack *stack_b)
 		if (stack_b->size > 0)
 			push_stack(stack_b, stack_a, "pa");
 	}
-	reverse_rotate_stack(stack_a, "rra");
+	if (stack_a->head->prev->value < stack_a->head->value)
+		reverse_rotate_stack(stack_a, "rra");
 	free_list(presorted);
 	free_stack(stack_a);
 	free_stack(stack_b);
@@ -35,18 +36,21 @@ void	sort2(struct sorted_list *presorted, t_stack *stack_a, t_stack *stack_b)
 	if (is_min_or_max(stack_b, stack_b->head->value) != 2)
 	{
 		if (stack_b->head->value < stack_a->head->prev->value
-			&& stack_b->head->value > stack_a->head->prev->prev->value)
+			&& stack_b->head->value > stack_a->head->next->value)
 		{
 			reverse_rotate_stack(stack_a, "rra");
 			push_stack(stack_b, stack_a, "pa");
 			rotate_stack(stack_a, "ra");
 			rotate_stack(stack_a, "ra");
 		}
-		push_stack(stack_b, stack_a, "pa");
-		if (stack_a->head->value > stack_a->head->prev->value)
-			rotate_stack(stack_a, "ra");
-		if (stack_a->head->value > stack_a->head->next->value)
-			swap_stack(stack_a, "sa");
+		else
+		{
+			push_stack(stack_b, stack_a, "pa");
+			if (stack_a->head->value > stack_a->head->prev->value)
+				rotate_stack(stack_a, "ra");
+			if (stack_a->head->value > stack_a->head->next->value)
+				swap_stack(stack_a, "sa");
+		}
 	}
 	sort3(presorted, stack_a, stack_b);
 }
