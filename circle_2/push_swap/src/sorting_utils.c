@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 12:59:33 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/11 17:21:51 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:17:26 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,55 @@ void	handle_len3(t_stack *stack_a)
 		else
 			reverse_rotate_stack(stack_a, "rra");
 	}
+}
+
+void	handle_len5bis(t_stack *stack_a, t_stack *stack_b)
+{
+	if (stack_b->head->value > stack_a->head->next->value
+		&& stack_b->head->value < stack_a->head->next->next->value)
+	{
+		rotate_stack(stack_a, "ra");
+		push_stack(stack_b, stack_a, "pa");
+		swap_stack(stack_a, "sa");
+		reverse_rotate_stack(stack_a, "rra");
+	}
+	else if (stack_b->head->value > stack_a->head->prev->prev->value
+		&& stack_b->head->value < stack_a->head->prev->value)
+	{
+		reverse_rotate_stack(stack_a, "rra");
+		push_stack(stack_b, stack_a, "pa");
+		rotate_stack(stack_a, "ra");
+		rotate_stack(stack_a, "ra");
+	}
+}
+
+void	handle_len5(t_stack *stack_a, t_stack *stack_b,
+	struct sorted_list *presorted)
+{
+	handle_len3(stack_a);
+	while (stack_b->size > 0)
+	{
+		if (stack_b->head->value > stack_a->head->prev->value)
+		{
+			push_stack(stack_b, stack_a, "pa");
+			rotate_stack(stack_a, "ra");
+		}
+		else if (stack_b->head->value < stack_a->head->value)
+			push_stack(stack_b, stack_a, "pa");
+		else if (stack_b->head->value > stack_a->head->value
+			&& stack_b->head->value < stack_a->head->next->value)
+		{
+			push_stack(stack_b, stack_a, "pa");
+			swap_stack(stack_a, "sa");
+		}
+		else if (stack_b->head->value > stack_a->head->next->value
+			&& stack_b->head->value < stack_a->head->next->next->value)
+			handle_len5bis(stack_a, stack_b);
+	}
+	free_list(presorted);
+	free_stack(stack_a);
+	free_stack(stack_b);
+	exit(0);
 }
 
 void	bubblesort(struct sorted_list *list)

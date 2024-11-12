@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:01:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/11 17:31:47 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/12 14:25:04 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,23 @@ struct sorted_list	*init_lists(t_stack *stack_a,
 	}
 	stack_a->size = argc - 1;
 	bubblesort(presorted);
+	i = 0;
+	next = presorted;
+	temp = stack_a->head;
+	while (i < stack_a->size)
+	{
+		if (temp->value != next->value)
+			break ;
+		i++;
+		temp = temp->next;
+		next = next->next;
+	}
+	if (i == stack_a->size)
+	{
+		free_list(presorted);
+		free_stack(stack_a);
+		free_stack(stack_b);
+	}
 	return (presorted);
 }
 
@@ -55,6 +72,7 @@ int	check_args(int argc, char **argv)
 				return ((write(2, "Error\n", 6)), 1);
 			j++;
 		}
+		i++;
 	}
 	return (0);
 }

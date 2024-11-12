@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:14:07 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/11 15:25:43 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:46:32 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 void	sort3(struct sorted_list *presorted, t_stack *stack_a, t_stack *stack_b)
 {
+	if (stack_b->size > 0 && stack_a->head->prev->value > stack_b->head->value)
+		reverse_rotate_stack(stack_a, "rra");
 	while (stack_b->size > 0)
 	{
 		while ((stack_a->head->prev->value > stack_b->head->value
-				&& is_min_or_max(stack_a, stack_a->head->prev->value) != 2)
-			|| (stack_a->head->prev->value > stack_b->head->value
-				&& stack_a->size == 3))
+				&& (is_min_or_max(stack_a, stack_a->head->prev->value) != 2)))
 			reverse_rotate_stack(stack_a, "rra");
 		if (stack_b->size > 0)
 			push_stack(stack_b, stack_a, "pa");
 	}
-	if (stack_a->head->prev->value < stack_a->head->value)
+	while (stack_a->head->prev->value < stack_a->head->value)
 		reverse_rotate_stack(stack_a, "rra");
 	free_list(presorted);
 	free_stack(stack_a);
@@ -59,9 +59,12 @@ void	sort_stacks(struct sorted_list *presorted, t_stack *stack_a,
 			t_stack *stack_b)
 {
 	run_tests(presorted, stack_a, stack_b);
-	if (stack_a->size > 4)
-		push_stack(stack_a, stack_b, "pb");
 	push_stack(stack_a, stack_b, "pb");
+	if (stack_a->size < 4)
+		handle_len5(stack_a, stack_b, presorted);
+	push_stack(stack_a, stack_b, "pb");
+	if (stack_a->size < 4)
+		handle_len5(stack_a, stack_b, presorted);
 	if (stack_b->head->value < stack_b->head->next->value)
 		swap_stack(stack_b, "sb");
 	if (stack_a->head->value < stack_b->head->value
@@ -76,7 +79,7 @@ void	sort_stacks(struct sorted_list *presorted, t_stack *stack_a,
 		push_stack(stack_a, stack_b, "pb");
 	while (stack_a->size > 3)
 		get_best_cost(stack_a, stack_b);
-	while (is_min_or_max(stack_b, stack_b->head->prev->value) == 0)
+	while (is_min_or_max(stack_b, stack_b->head->prev->value) != 1)
 		rotate_stack(stack_b, "rb");
 	handle_len3(stack_a);
 	sort2(presorted, stack_a, stack_b);

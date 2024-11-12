@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:02:10 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/11 17:21:32 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:17:42 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void					handle_len3(t_stack *stack_a);
 void					bubblesort(struct sorted_list *list);
 void					sort_stacks(struct sorted_list *presorted,
 							t_stack *stack_a, t_stack *stack_b);
+void					handle_len5(t_stack *stack_a, t_stack *stack_b,
+							struct sorted_list *presorted);
 
 // Tests functions
 void					run_tests(struct sorted_list *next,
