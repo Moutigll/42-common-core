@@ -6,11 +6,38 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:01:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/12 14:25:04 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:39:40 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	check_is_sorted(t_stack *stack_a, t_stack *stack_b,
+			struct sorted_list *presorted)
+{
+	struct circular_list	*temp;
+	struct sorted_list		*next;
+	int						i;
+
+	temp = stack_a->head;
+	next = presorted;
+	i = 0;
+	while (i < stack_a->size)
+	{
+		if (temp->value != next->value)
+			break ;
+		i++;
+		temp = temp->next;
+		next = next->next;
+	}
+	if (i == stack_a->size)
+	{
+		free_list(presorted);
+		free_stack(stack_a);
+		free_stack(stack_b);
+		exit(0);
+	}
+}
 
 struct sorted_list	*init_lists(t_stack *stack_a,
 						t_stack *stack_b, int argc, char **argv)
@@ -35,46 +62,10 @@ struct sorted_list	*init_lists(t_stack *stack_a,
 	}
 	stack_a->size = argc - 1;
 	bubblesort(presorted);
-	i = 0;
+	check_is_sorted(stack_a, stack_b, presorted);
 	next = presorted;
 	temp = stack_a->head;
-	while (i < stack_a->size)
-	{
-		if (temp->value != next->value)
-			break ;
-		i++;
-		temp = temp->next;
-		next = next->next;
-	}
-	if (i == stack_a->size)
-	{
-		free_list(presorted);
-		free_stack(stack_a);
-		free_stack(stack_b);
-	}
 	return (presorted);
-}
-
-int	check_args(int argc, char **argv)
-{
-	int	i;
-	int	j;
-
-	if (argc < 2)
-		return (1);
-	i = 1;
-	while (i < argc)
-	{
-		j = i + 1;
-		while (j < argc)
-		{
-			if (ft_atoi(argv[i]) == ft_atoi(argv[j]))
-				return ((write(2, "Error\n", 6)), 1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
 }
 
 int	main(int argc, char **argv)

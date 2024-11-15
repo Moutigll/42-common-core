@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 12:59:33 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/12 16:17:26 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:10:57 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ void	handle_len5(t_stack *stack_a, t_stack *stack_b,
 			push_stack(stack_b, stack_a, "pa");
 			swap_stack(stack_a, "sa");
 		}
-		else if (stack_b->head->value > stack_a->head->next->value
-			&& stack_b->head->value < stack_a->head->next->next->value)
+		else
 			handle_len5bis(stack_a, stack_b);
 	}
 	free_list(presorted);
