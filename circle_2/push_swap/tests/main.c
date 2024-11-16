@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 11:21:05 by moutig            #+#    #+#             */
-/*   Updated: 2024/11/08 09:43:42 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 17:53:55 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,8 @@ void	print_stacks(t_stack *stack_a, t_stack *stack_b)
 
 #ifdef TESTING
 
-void	run_tests(struct sorted_list *next, t_stack *stack_a, t_stack *stack_b)
+void	run_tests(t_stack *stack_a, t_stack *stack_b)
 {
-	ft_printf("Presorted list:\n");
-	while (next)
-	{
-		ft_printf("%d\n", next->value);
-		next = next->next;
-	}
 	ft_printf("\n\n----------Stacks tests----------\n\n");
 	ft_printf("\n\n\nPush tests:\n\n\n");
 	push_tests(stack_a, stack_b);
@@ -98,10 +92,8 @@ void	run_tests(struct sorted_list *next, t_stack *stack_a, t_stack *stack_b)
 }
 #else
 
-void	run_tests(struct sorted_list *next,
-		t_stack *stack_a, t_stack *stack_b)
+void	run_tests(t_stack *stack_a, t_stack *stack_b)
 {
-	(void)next;
 	(void)stack_a;
 	(void)stack_b;
 	return ;

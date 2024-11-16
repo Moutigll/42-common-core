@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:02:10 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/16 17:12:38 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 17:46:05 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,6 @@ typedef struct s_stack
 	t_clist	*head;
 	int		size;
 }			t_stack;
-
-// Node for linked list to store sorted list for checker
-typedef struct sorted_list
-{
-	int						value;
-	struct sorted_list		*next;
-}		t_slist;
 
 // Structure to store the cost of sorting a number in stack b
 typedef struct s_costb
@@ -68,10 +61,8 @@ typedef struct s_args
 }		t_args;
 
 // List manipulation
-struct sorted_list		*append_sorted(struct sorted_list *previous, int value);
 struct circular_list	*insert_circular(struct circular_list
 							*previous, int value);
-void					free_list(struct sorted_list *list);
 void					free_stack(t_stack *stack);
 void					is_stack_a_sorted(t_stack *stack_a, t_stack *stack_b);
 
@@ -95,15 +86,11 @@ t_total_cost			*init_total_cost(void);
 
 // Functions to check sorting and sort
 void					handle_len3(t_stack *stack_a);
-void					bubblesort(struct sorted_list *list);
-void					sort_stacks(struct sorted_list *presorted,
-							t_stack *stack_a, t_stack *stack_b);
-void					handle_len5(t_stack *stack_a, t_stack *stack_b,
-							struct sorted_list *presorted);
+void					sort_stacks(t_stack *stack_a, t_stack *stack_b);
+void					handle_len5(t_stack *stack_a, t_stack *stack_b);
 
 // Tests functions
-void					run_tests(struct sorted_list *next,
-							t_stack *stack_a, t_stack *stack_b);
+void					run_tests(t_stack *stack_a, t_stack *stack_b);
 void					push_tests(t_stack *stack_a, t_stack *stack_b);
 void					swap_tests(t_stack *stack_a, t_stack *stack_b);
 void					print_stacks(t_stack *stack_a, t_stack *stack_b);

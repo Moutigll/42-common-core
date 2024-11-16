@@ -6,29 +6,11 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:10:59 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 18:17:30 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 17:49:24 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-struct sorted_list	*append_sorted(struct sorted_list *previous, int value)
-{
-	struct sorted_list	*new;
-
-	new = (struct sorted_list *)malloc(sizeof(struct sorted_list));
-	if (!new)
-		return (0);
-	new->value = value;
-	new->next = NULL;
-	if (!previous)
-	{
-		previous = new;
-		return (new);
-	}
-	previous->next = new;
-	return (new);
-}
 
 struct circular_list	*insert_empty(struct circular_list *new)
 {
@@ -63,22 +45,6 @@ struct circular_list	*insert_circular(struct circular_list *previous,
 		new->next->prev = new;
 	}
 	return (new);
-}
-
-void	free_list(struct sorted_list *list)
-{
-	struct sorted_list	*current;
-	struct sorted_list	*next;
-
-	if (!list)
-		return ;
-	current = list;
-	while (current)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
 }
 
 void	free_stack(t_stack *stack)

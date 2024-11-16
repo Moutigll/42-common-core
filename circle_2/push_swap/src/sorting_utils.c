@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 12:59:33 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/16 16:00:40 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 17:50:43 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ void	handle_len5bis(t_stack *stack_a, t_stack *stack_b)
 	}
 }
 
-void	handle_len5(t_stack *stack_a, t_stack *stack_b,
-	struct sorted_list *presorted)
+void	handle_len5(t_stack *stack_a, t_stack *stack_b)
 {
 	handle_len3(stack_a);
 	while (stack_b->size > 0)
@@ -76,30 +75,9 @@ void	handle_len5(t_stack *stack_a, t_stack *stack_b,
 		else
 			handle_len5bis(stack_a, stack_b);
 	}
-	free_list(presorted);
 	free_stack(stack_a);
 	free_stack(stack_b);
 	exit(0);
-}
-
-void	bubblesort(struct sorted_list *list)
-{
-	struct sorted_list	*current;
-	int					temp;
-
-	current = list;
-	while (current->next)
-	{
-		if (current->value > current->next->value)
-		{
-			temp = current->value;
-			current->value = current->next->value;
-			current->next->value = temp;
-			current = list;
-		}
-		else
-			current = current->next;
-	}
 }
 
 // init total cost structure used to keep cost to sort each number
