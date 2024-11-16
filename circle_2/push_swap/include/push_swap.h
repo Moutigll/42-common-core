@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:02:10 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/15 17:43:21 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 13:58:26 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,6 @@ void					swap_tests(t_stack *stack_a, t_stack *stack_b);
 void					print_stacks(t_stack *stack_a, t_stack *stack_b);
 void					rotate_tests(t_stack *stack_a, t_stack *stack_b);
 
+// Check args functions
 int						check_args(int argc, char **argv);
+int						write_error(void);
