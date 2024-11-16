@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:32:03 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/16 15:39:35 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 17:12:56 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,26 @@ int	check_args(int argc, char **argv)
 		i++;
 	}
 	return (0);
+}
+
+void	is_stack_a_sorted(t_stack *stack_a, t_stack *stack_b)
+{
+	t_clist	*temp;
+	int		i;
+
+	temp = stack_a->head;
+	i = 0;
+	while (i < stack_a->size - 1)
+	{
+		if (temp->value > temp->next->value)
+		{
+			write(1, "KO\n", 3);
+			exit(0);
+		}
+		temp = temp->next;
+		i++;
+	}
+	if (stack_b->size > 0)
+		write(1, "KO\n", 3);
+	write(1, "OK\n", 3);
 }

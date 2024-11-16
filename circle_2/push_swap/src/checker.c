@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:49:28 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/16 16:27:12 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 17:12:15 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,51 +40,29 @@ struct sorted_list	*init_lists(t_stack *stack_a,
 	return (presorted);
 }
 
-void	is_stack_a_sorted(t_stack *stack_a, t_stack *stack_b)
-{
-	t_clist	*temp;
-	int		i;
-
-	temp = stack_a->head;
-	i = 0;
-	while (i < stack_a->size - 1)
-	{
-		if (temp->value > temp->next->value)
-		{
-			write(1, "KO\n", 3);
-			exit(0);
-		}
-		temp = temp->next;
-		i++;
-	}
-	if (stack_b->size > 0)
-		write(1, "KO\n", 3);
-	write(1, "OK\n", 3);
-}
-
 void	execute_command(const char *command, t_stack *stack_a, t_stack *stack_b)
 {
-	if (ft_strncmp(command, "sa", 2) == 0)
+	if (ft_strncmp(command, "sa", 2) == 0 && ft_strlen(command) == 3)
 		swap_stack(stack_a, "");
-	else if (ft_strncmp(command, "sb", 2) == 0)
+	else if (ft_strncmp(command, "sb", 2) == 0 && ft_strlen(command) == 3)
 		swap_stack(stack_b, "");
-	else if (ft_strncmp(command, "ss", 2) == 0)
+	else if (ft_strncmp(command, "ss", 2) == 0 && ft_strlen(command) == 3)
 		swap_both(stack_a, stack_b);
-	else if (ft_strncmp(command, "pa", 2) == 0)
+	else if (ft_strncmp(command, "pa", 2) == 0 && ft_strlen(command) == 3)
 		push_stack(stack_b, stack_a, "");
-	else if (ft_strncmp(command, "pb", 2) == 0)
+	else if (ft_strncmp(command, "pb", 2) == 0 && ft_strlen(command) == 3)
 		push_stack(stack_a, stack_b, "");
-	else if (ft_strncmp(command, "ra", 2) == 0)
+	else if (ft_strncmp(command, "ra", 2) == 0 && ft_strlen(command) == 3)
 		rotate_stack(stack_a, "");
-	else if (ft_strncmp(command, "rb", 2) == 0)
+	else if (ft_strncmp(command, "rb", 2) == 0 && ft_strlen(command) == 3)
 		rotate_stack(stack_b, "");
-	else if (ft_strncmp(command, "rr", 2) == 0)
+	else if (ft_strncmp(command, "rr", 2) == 0 && ft_strlen(command) == 3)
 		rotate_both(stack_a, stack_b);
-	else if (ft_strncmp(command, "rra", 2) == 0)
+	else if (ft_strncmp(command, "rra", 3) == 0 && ft_strlen(command) == 4)
 		reverse_rotate_stack(stack_a, "");
-	else if (ft_strncmp(command, "rrb", 2) == 0)
+	else if (ft_strncmp(command, "rrb", 3) == 0 && ft_strlen(command) == 4)
 		reverse_rotate_stack(stack_b, "");
-	else if (ft_strncmp(command, "rrr", 2) == 0)
+	else if (ft_strncmp(command, "rrr", 3) == 0 && ft_strlen(command) == 4)
 		reverse_rotate_both(stack_a, stack_b);
 }
 
@@ -109,20 +87,10 @@ int	is_valid_command(const char *line)
 	return (0);
 }
 
-int	main(int argc, char **argv)
+void	main2(struct sorted_list *presorted, t_stack *stack_a, t_stack *stack_b)
 {
-	struct sorted_list	*presorted;
-	t_stack				*stack_a;
-	t_stack				*stack_b;
-	char				*line;
+	char	*line;
 
-	if (check_args(argc, argv) == 1)
-		return (0);
-	stack_a = (t_stack *)malloc(sizeof(t_stack));
-	stack_b = (t_stack *)malloc(sizeof(t_stack));
-	if (!stack_a || !stack_b)
-		return (1);
-	presorted = init_lists(stack_a, stack_b, argc, argv);
 	while (1)
 	{
 		line = get_next_line(0);
@@ -141,5 +109,21 @@ int	main(int argc, char **argv)
 	free_stack(stack_a);
 	free_stack(stack_b);
 	free_list(presorted);
+}
+
+int	main(int argc, char **argv)
+{
+	struct sorted_list	*presorted;
+	t_stack				*stack_a;
+	t_stack				*stack_b;
+
+	if (check_args(argc, argv) == 1)
+		return (0);
+	stack_a = (t_stack *)malloc(sizeof(t_stack));
+	stack_b = (t_stack *)malloc(sizeof(t_stack));
+	if (!stack_a || !stack_b)
+		return (1);
+	presorted = init_lists(stack_a, stack_b, argc, argv);
+	main2(presorted, stack_a, stack_b);
 	return (0);
 }

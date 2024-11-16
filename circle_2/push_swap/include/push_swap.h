@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:02:10 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/16 15:50:06 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 17:12:38 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ struct circular_list	*insert_circular(struct circular_list
 							*previous, int value);
 void					free_list(struct sorted_list *list);
 void					free_stack(t_stack *stack);
+void					is_stack_a_sorted(t_stack *stack_a, t_stack *stack_b);
 
 // Stacks operations
 int						push_stack(t_stack *stack_a, t_stack *stack_b,
