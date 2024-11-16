@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:01:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/15 17:39:40 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 16:33:08 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ struct sorted_list	*init_lists(t_stack *stack_a,
 	check_is_sorted(stack_a, stack_b, presorted);
 	next = presorted;
 	temp = stack_a->head;
+	run_tests(next, stack_a, stack_b);
 	return (presorted);
 }
 
@@ -85,7 +86,7 @@ int	main(int argc, char **argv)
 	{
 		if (stack_a->size == 2 && stack_a->head->value
 			> stack_a->head->next->value)
-			swap_stack(stack_a, "sa");
+			swap_stack(stack_a, "sa\n");
 		if (stack_a->size == 3)
 			handle_len3(stack_a);
 		free_list(presorted);

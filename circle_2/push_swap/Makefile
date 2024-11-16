@@ -1,6 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -I include -I libft/include
 NAME = push_swap
+CHECKER = checker
 SRC_DIR = src
 TEST_DIR = tests
 
@@ -32,21 +33,23 @@ $(NAME): $(LIBFT) $(PUSH_SWAP_OBJS) $(TEST_OBJS) $(NORMAL_OBJS)
 $(TEST_DIR)/%.o: $(TEST_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bonus: $(LIBFT) $(PUSH_SWAP_OBJS) $(TEST_OBJS) $(BONUS_OBJS)
-	$(CC) $(CFLAGS) -o checker $(BONUS_OBJS) $(PUSH_SWAP_OBJS) $(TEST_OBJS) $(LIBFT)
+bonus: $(CHECKER)
+
+$(CHECKER): $(LIBFT) $(PUSH_SWAP_OBJS) $(TEST_OBJS) $(BONUS_OBJS)
+	$(CC) $(CFLAGS) -o $(CHECKER) $(BONUS_OBJS) $(PUSH_SWAP_OBJS) $(TEST_OBJS) $(LIBFT)
 
 test: CFLAGS += -DTESTING
-test: fclean $(LIBFT) $(PUSH_SWAP_OBJS) $(TEST_OBJS)
-	$(CC) $(CFLAGS) -o push_swap $(PUSH_SWAP_OBJS) $(TEST_OBJS) $(LIBFT)
+test: fclean $(LIBFT) $(PUSH_SWAP_OBJS) $(TEST_OBJS) $(NORMAL_OBJS)
+	$(CC) $(CFLAGS) -o push_swap $(NORMAL_OBJS) $(PUSH_SWAP_OBJS) $(TEST_OBJS) $(LIBFT)
 	@make clean
-	./push_swap 1 2 3 4 5
+	./push_swap 5 4 3 2 1
 
 clean:
 	@rm -f $(PUSH_SWAP_OBJS) $(TEST_OBJS) $(NORMAL_OBJS) $(BONUS_OBJS)
 	@make -C libft clean
 
 fclean: clean
-	@rm -f $(NAME)
+	@rm -f $(NAME) $(CHECKER)
 	@make -C libft fclean
 
 re: fclean all

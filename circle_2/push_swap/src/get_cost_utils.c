@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 15:31:51 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/10 18:49:52 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 16:14:28 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ t_costb	*get_stackb_cost(int number, t_stack *stack_b)
 }
 
 // Perform n times the function f with the parameters provided
+
 void	print_loop(int (*f)(t_stack *, void *), t_stack *param1,
 			void *param2, int n)
 {
@@ -96,6 +97,10 @@ void	print_loop(int (*f)(t_stack *, void *), t_stack *param1,
 	{
 		f(param1, param2);
 		i++;
+		if (f == rotate_both)
+			write(1, "rr\n", 3);
+		else if (f == reverse_rotate_both)
+			write(1, "rrr\n", 4);
 	}
 }
 
@@ -105,9 +110,9 @@ void	print_operations_string(t_total_cost *best,	t_stack *stack_a,
 {
 	print_loop(rotate_both, stack_a, stack_b, best->rr);
 	print_loop(reverse_rotate_both, stack_a, stack_b, best->rrr);
-	print_loop(rotate_stack, stack_a, "ra", best->ra);
-	print_loop(rotate_stack, stack_b, "rb", best->rb);
-	print_loop(reverse_rotate_stack, stack_a, "rra", best->rra);
-	print_loop(reverse_rotate_stack, stack_b, "rrb", best->rrb);
-	push_stack(stack_a, stack_b, "pb");
+	print_loop(rotate_stack, stack_a, "ra\n", best->ra);
+	print_loop(rotate_stack, stack_b, "rb\n", best->rb);
+	print_loop(reverse_rotate_stack, stack_a, "rra\n", best->rra);
+	print_loop(reverse_rotate_stack, stack_b, "rrb\n", best->rrb);
+	push_stack(stack_a, stack_b, "pb\n");
 }

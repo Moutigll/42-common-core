@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 12:59:33 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/15 18:10:57 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 16:00:40 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@ void	handle_len3(t_stack *stack_a)
 {
 	if (stack_a->head->value > stack_a->head->next->value
 		&& stack_a->head->value < stack_a->head->prev->value)
-		swap_stack(stack_a, "sa");
+		swap_stack(stack_a, "sa\n");
 	else if (stack_a->head->value > stack_a->head->prev->value
 		&& stack_a->head->prev->value > stack_a->head->next->value)
-		rotate_stack(stack_a, "ra");
+		rotate_stack(stack_a, "ra\n");
 	else if (stack_a->head->value > stack_a->head->prev->value
 		&& stack_a->head->value < stack_a->head->next->value)
-		reverse_rotate_stack(stack_a, "rra");
+		reverse_rotate_stack(stack_a, "rra\n");
 	else if (stack_a->head->value > stack_a->head->next->value
 		|| stack_a->head->next->value > stack_a->head->prev->value)
 	{
-		swap_stack(stack_a, "sa");
+		swap_stack(stack_a, "sa\n");
 		if (stack_a->head->value > stack_a->head->next->value)
-			rotate_stack(stack_a, "ra");
+			rotate_stack(stack_a, "ra\n");
 		else
-			reverse_rotate_stack(stack_a, "rra");
+			reverse_rotate_stack(stack_a, "rra\n");
 	}
 }
 
@@ -39,18 +39,18 @@ void	handle_len5bis(t_stack *stack_a, t_stack *stack_b)
 	if (stack_b->head->value > stack_a->head->next->value
 		&& stack_b->head->value < stack_a->head->next->next->value)
 	{
-		rotate_stack(stack_a, "ra");
-		push_stack(stack_b, stack_a, "pa");
-		swap_stack(stack_a, "sa");
-		reverse_rotate_stack(stack_a, "rra");
+		rotate_stack(stack_a, "ra\n");
+		push_stack(stack_b, stack_a, "pa\n");
+		swap_stack(stack_a, "sa\n");
+		reverse_rotate_stack(stack_a, "rra\n");
 	}
 	else if (stack_b->head->value > stack_a->head->prev->prev->value
 		&& stack_b->head->value < stack_a->head->prev->value)
 	{
-		reverse_rotate_stack(stack_a, "rra");
-		push_stack(stack_b, stack_a, "pa");
-		rotate_stack(stack_a, "ra");
-		rotate_stack(stack_a, "ra");
+		reverse_rotate_stack(stack_a, "rra\n");
+		push_stack(stack_b, stack_a, "pa\n");
+		rotate_stack(stack_a, "ra\n");
+		rotate_stack(stack_a, "ra\n");
 	}
 }
 
@@ -62,16 +62,16 @@ void	handle_len5(t_stack *stack_a, t_stack *stack_b,
 	{
 		if (stack_b->head->value > stack_a->head->prev->value)
 		{
-			push_stack(stack_b, stack_a, "pa");
-			rotate_stack(stack_a, "ra");
+			push_stack(stack_b, stack_a, "pa\n");
+			rotate_stack(stack_a, "ra\n");
 		}
 		else if (stack_b->head->value < stack_a->head->value)
-			push_stack(stack_b, stack_a, "pa");
+			push_stack(stack_b, stack_a, "pa\n");
 		else if (stack_b->head->value > stack_a->head->value
 			&& stack_b->head->value < stack_a->head->next->value)
 		{
-			push_stack(stack_b, stack_a, "pa");
-			swap_stack(stack_a, "sa");
+			push_stack(stack_b, stack_a, "pa\n");
+			swap_stack(stack_a, "sa\n");
 		}
 		else
 			handle_len5bis(stack_a, stack_b);

@@ -6,38 +6,11 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:49:28 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/16 15:08:54 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/16 16:27:12 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-void	check_is_sorted(t_stack *stack_a, t_stack *stack_b,
-			struct sorted_list *presorted)
-{
-	struct circular_list	*temp;
-	struct sorted_list		*next;
-	int						i;
-
-	temp = stack_a->head;
-	next = presorted;
-	i = 0;
-	while (i < stack_a->size)
-	{
-		if (temp->value != next->value)
-			break ;
-		i++;
-		temp = temp->next;
-		next = next->next;
-	}
-	if (i == stack_a->size)
-	{
-		free_list(presorted);
-		free_stack(stack_a);
-		free_stack(stack_b);
-		exit(0);
-	}
-}
 
 struct sorted_list	*init_lists(t_stack *stack_a,
 						t_stack *stack_b, int argc, char **argv)
@@ -62,18 +35,65 @@ struct sorted_list	*init_lists(t_stack *stack_a,
 	}
 	stack_a->size = argc - 1;
 	bubblesort(presorted);
-	check_is_sorted(stack_a, stack_b, presorted);
 	next = presorted;
 	temp = stack_a->head;
 	return (presorted);
 }
 
+void	is_stack_a_sorted(t_stack *stack_a, t_stack *stack_b)
+{
+	t_clist	*temp;
+	int		i;
+
+	temp = stack_a->head;
+	i = 0;
+	while (i < stack_a->size - 1)
+	{
+		if (temp->value > temp->next->value)
+		{
+			write(1, "KO\n", 3);
+			exit(0);
+		}
+		temp = temp->next;
+		i++;
+	}
+	if (stack_b->size > 0)
+		write(1, "KO\n", 3);
+	write(1, "OK\n", 3);
+}
+
+void	execute_command(const char *command, t_stack *stack_a, t_stack *stack_b)
+{
+	if (ft_strncmp(command, "sa", 2) == 0)
+		swap_stack(stack_a, "");
+	else if (ft_strncmp(command, "sb", 2) == 0)
+		swap_stack(stack_b, "");
+	else if (ft_strncmp(command, "ss", 2) == 0)
+		swap_both(stack_a, stack_b);
+	else if (ft_strncmp(command, "pa", 2) == 0)
+		push_stack(stack_b, stack_a, "");
+	else if (ft_strncmp(command, "pb", 2) == 0)
+		push_stack(stack_a, stack_b, "");
+	else if (ft_strncmp(command, "ra", 2) == 0)
+		rotate_stack(stack_a, "");
+	else if (ft_strncmp(command, "rb", 2) == 0)
+		rotate_stack(stack_b, "");
+	else if (ft_strncmp(command, "rr", 2) == 0)
+		rotate_both(stack_a, stack_b);
+	else if (ft_strncmp(command, "rra", 2) == 0)
+		reverse_rotate_stack(stack_a, "");
+	else if (ft_strncmp(command, "rrb", 2) == 0)
+		reverse_rotate_stack(stack_b, "");
+	else if (ft_strncmp(command, "rrr", 2) == 0)
+		reverse_rotate_both(stack_a, stack_b);
+}
+
 int	is_valid_command(const char *line)
 {
+	int					i;
 	static const char	*valid_commands[] = {
 		"sa", "sb", "ss", "pa", "pb", "ra", "rb", "rr", "rra",
-		"rrb", "rrr", NULL};
-	int					i;
+		"rrb", "rrr"};
 
 	if (!line)
 		return (0);
@@ -82,7 +102,7 @@ int	is_valid_command(const char *line)
 	{
 		if (ft_strncmp(line, valid_commands[i],
 				ft_strlen(valid_commands[i])) == 0
-			&& ft_strlen(line) == ft_strlen(valid_commands[i]))
+			&& ft_strlen(line) - 1 == ft_strlen(valid_commands[i]))
 			return (1);
 		i++;
 	}
@@ -113,7 +133,13 @@ int	main(int argc, char **argv)
 			free(line);
 			write_error();
 		}
+		else
+			execute_command(line, stack_a, stack_b);
 		free(line);
 	}
+	is_stack_a_sorted(stack_a, stack_b);
+	free_stack(stack_a);
+	free_stack(stack_b);
+	free_list(presorted);
 	return (0);
 }
