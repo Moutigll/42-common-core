@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:54:49 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/11 17:20:45 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/19 11:52:23 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,6 @@ void	get_best_cost(t_stack *stack_a, t_stack *stack_b)
 		args->next = args->next->next;
 		args->i++;
 	}
-	free(args);
 	extract_best_cost(args->cost_list, stack_a, stack_b);
+	free(args);
 }
