@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:49:28 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/16 17:53:08 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:49:22 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,11 @@ int	main(int argc, char **argv)
 		return (0);
 	stack_a = (t_stack *)malloc(sizeof(t_stack));
 	stack_b = (t_stack *)malloc(sizeof(t_stack));
-	if (!stack_a || !stack_b)
-		return (1);
+	if (!stack_a)
+		return (free(stack_b), 1);
+	if (!stack_b)
+		return (free(stack_a), 1);
+	init_lists(stack_a, stack_b, argc, argv);
 	main2(stack_a, stack_b);
 	return (0);
 }
