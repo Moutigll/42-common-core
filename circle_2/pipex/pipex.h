@@ -6,13 +6,14 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 13:36:41 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/21 15:38:51 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:27:19 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 #include "printf.h"
 
