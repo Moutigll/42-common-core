@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 13:36:41 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/25 17:39:45 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/25 19:47:43 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,3 +31,7 @@ typedef struct s_pipex
 
 void	ft_init_pipex(t_pipex *pipex);
 void	clean_pipex(t_pipex *pipex, char *error, int exit_status);
+void	get_path(t_pipex *pipex, char **envp);
+void	ft_parse_cmds(t_pipex *pipex, char **argv, int argc);
+void	check_args(int argc, char **argv, t_pipex *pipex);
+void	exec_cmd(t_pipex *pipex, int i, char **envp);

@@ -3,7 +3,7 @@ CFLAGS = -Wall -Werror -Wextra -I include -I libft/include
 NAME = pipex
 
 
-PIPEX = pipex.c clean.c
+PIPEX = pipex.c clean.c get_cmd.c check_args.c exec_cmd.c
 PIPEX_OBJ = $(PIPEX:.c=.o)
 
 LIBFT = libft/libft.a
