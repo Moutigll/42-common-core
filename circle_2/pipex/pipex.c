@@ -6,54 +6,11 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 13:36:20 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/25 15:55:42 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/25 19:21:43 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	ft_init_pipex(t_pipex *pipex)
-{
-	pipex->in_fd = -1;
-	pipex->out_fd = -1;
-	pipex->cmd_paths = NULL;
-	pipex->cmd_args = NULL;
-	pipex->cmd_count = 0;
-	pipex->here_doc = 0;
-}
-
-void	clean_pipex(t_pipex *pipex, char *error, int exit_status)
-{
-	int	i;
-
-	if (pipex->cmd_args)
-	{
-		i = 0;
-		while (i < pipex->cmd_count && pipex->cmd_args[i])
-		{
-			int j = 0;
-			while (pipex->cmd_args[i][j])
-				free(pipex->cmd_args[i][j++]);
-			free(pipex->cmd_args[i]);
-			i++;
-		}
-		free(pipex->cmd_args);
-	}
-	if (pipex->cmd_paths)
-	{
-		i = 0;
-		while (pipex->cmd_paths[i])
-			free(pipex->cmd_paths[i++]);
-		free(pipex->cmd_paths);
-	}
-	if (pipex->in_fd != -1)
-		close(pipex->in_fd);
-	if (pipex->out_fd != -1)
-		close(pipex->out_fd);
-	if (error)
-		perror(error);
-	exit(exit_status);
-}
 
 void	check_args(int argc, char **argv, t_pipex *pipex)
 {
@@ -178,18 +135,25 @@ void	ft_parse_cmds(t_pipex *pipex, char **argv, int argc)
 			j++;
 		}
 		if (!full_cmd)
-			clean_pipex(pipex, "Command not found in PATH", 127);
-		free(pipex->cmd_args[i][0]);
-		pipex->cmd_args[i][0] = full_cmd;
+		{
+			perror("Command not found in PATH");
+			free(pipex->cmd_args[i][0]);
+			pipex->cmd_args[i][0] = NULL;
+		}
+		else
+		{
+			free(pipex->cmd_args[i][0]);
+			pipex->cmd_args[i][0] = full_cmd;
+		}
 		i++;
 	}
 	pipex->cmd_args[i] = NULL;
 }
 
-void	exec_cmd(t_pipex *pipex, int i, char **envp)
+void exec_cmd(t_pipex *pipex, int i, char **envp)
 {
-	int		pipe_fd[2];
-	pid_t	pid;
+	int pipe_fd[2];
+	pid_t pid;
 
 	if (pipe(pipe_fd) == -1)
 		return ;
@@ -208,16 +172,29 @@ void	exec_cmd(t_pipex *pipex, int i, char **envp)
 			dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		execve(pipex->cmd_args[i][0], pipex->cmd_args[i], envp);
-		clean_pipex(pipex, "Failed to execute command", 127);
+		if (pipex->cmd_args[i] && pipex->cmd_args[i][0])
+		{
+			if (access(pipex->cmd_args[i][0], X_OK) == 0)
+				execve(pipex->cmd_args[i][0], pipex->cmd_args[i], envp);
+			else
+				perror("Failed to execute command");
+		}
+		else
+		{
+			perror("Invalid command");
+		}
+		clean_pipex(pipex, NULL, 127);
 	}
 	else
 	{
 		close(pipe_fd[1]);
+		if (i > 0)
+			close(pipex->pipe_fd[0]);
 		pipex->pipe_fd[0] = pipe_fd[0];
 		waitpid(pid, NULL, 0);
 	}
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -236,6 +213,6 @@ int	main(int argc, char **argv, char **envp)
 		exec_cmd(&pipex, i, envp);
 		i++;
 	}
-	clean_pipex(&pipex, NULL, 0);
+	clean_pipex(&pipex, NULL, -1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:02:29 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/10/16 16:30:54 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:14:00 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,8 @@ static char	*malloc_word(const char *s, char c)
 		len++;
 	word = (char *)malloc(len + 1);
 	if (!word)
-		return (0);
-	word[len] = '\0';
-	while (len > 0)
-	{
-		len--;
-		word[len] = s[len];
-	}
+		return (NULL);
+	ft_strlcpy(word, s, len + 1);
 	return (word);
 }
 
@@ -88,7 +83,7 @@ int	fill_array(char const *s, char c, char **split)
 		while (s[i] != c && s[i])
 			i++;
 	}
-	split[index] = 0;
+	split[index] = NULL;
 	return (1);
 }
 
