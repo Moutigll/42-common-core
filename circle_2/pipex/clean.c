@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:37:02 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/25 19:37:14 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:15:10 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	ft_init_pipex(t_pipex *pipex)
 {
+	pipex->in_fd = -1;
+	pipex->out_fd = -1;
+	pipex->pipe_fd[0] = -1;
 	pipex->cmd_paths = NULL;
 	pipex->cmd_args = NULL;
 	pipex->cmd_count = 0;
@@ -52,9 +55,6 @@ void	clean_pipex(t_pipex *pipex, char *error, int exit_status)
 		close(pipex->out_fd);
 	if (pipex->pipe_fd[0] != -1)
 		close(pipex->pipe_fd[0]);
-	close(STDOUT_FILENO);
-	close(STDIN_FILENO);
-	close(STDERR_FILENO);
 	if (error)
 		perror(error);
 	if (exit_status != -1)
