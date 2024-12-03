@@ -6,45 +6,28 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:26:11 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/28 13:44:55 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/03 09:33:45 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "mlx.h"
 
-#include <unistd.h>
-#include <mlx.h>
-
-void	ft_putchar(int c)
+int main(void)
 {
-	write(1, &c, 1);
-}
+    void *mlx;
+    void *win;
 
-int	deal_key(int key, void *param)
-{
-	ft_putchar('x');
-}
+    // Initialisation de la bibliothèque mlx
+    mlx = mlx_init();
+    
+    // Création d'une fenêtre de 800x800 pixels
+    win = mlx_new_window(mlx, 800, 800, "Pixel Example");
 
-int	main(void)
-{
-	void	*mlx;
-	void	*win;
+    // Affichage d'un pixel rouge (0xFF0000) à la position (400, 400)
+    mlx_pixel_put(mlx, win, 400, 400, 0xFF0000);
 
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, 1920, 1080, "fdf");
-	mlx_key_hook(win, deal_key, (void *)0);
-	int x = 50;
-	
-	while (x < 100)
-	{
-		int y = 40;
-		while (y < 100)
-		{
-			mlx_pixel_put(mlx, win, x, y, 0x00FF0000);
-			y++;
-		}
-		x++;
-	}
-	mlx_pixel_put(mlx, win, 100, 100, 0x00FF0000);
-	mlx_loop(mlx);
-	return (0);
+    // Boucle infinie pour maintenir la fenêtre ouverte
+    mlx_loop(mlx);
+
+    return (0);
 }
