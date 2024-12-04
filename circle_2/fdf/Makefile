@@ -6,7 +6,7 @@ MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 INCLUDES = -I$(MLX_DIR) -I./libft/include
 LIBFT = ./libft/libft.a
 
-SRCS = main.c draw_utils.c parsing.c draw_map.c
+SRCS = main.c draw_utils.c parsing.c draw_map.c rotation_matrix.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

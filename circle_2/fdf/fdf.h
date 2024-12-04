@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 04:11:04 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/04 05:55:21 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/04 09:45:33 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ typedef struct s_fdf
 
 typedef struct s_point
 {
-	int	x;
-	int	y;
-	int	z;
-	int	color;
+	double	x;
+	double	y;
+	double	z;
+	int		color;
 }	t_point;
 
 typedef struct s_line
@@ -54,3 +54,5 @@ void	draw_line(t_fdf *fdf, t_point a, t_point b);
 void	put_pixel_to_image(char *img_data, int x, int y, int color);
 void	parse_map(int argc, char **argv, t_fdf *fdf);
 void	draw_map(t_fdf *fdf);
+void	apply_rotation(t_list *points, double angle_x,
+			double angle_y, double angle_z);

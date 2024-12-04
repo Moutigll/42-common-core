@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:53:51 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/04 07:50:21 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/04 10:17:33 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	add_points_to_map(char **split, int y, t_fdf *fdf)
 			write(1, "Error: Memory allocation failed for point\n", 41);
 			exit(1);
 		}
-		new_point->x = x;
-		new_point->y = y;
-		new_point->z = ft_atoi(split[x]);
+		new_point->x = (x * 20) + 150;
+		new_point->y = (y * 20) + 150;
+		new_point->z = ft_atoi(split[x]) * 10;
 		new_point->color = 0x00FFFFFF;
 		ft_lstadd_back(&fdf->map, ft_lstnew(new_point));
 		x++;
