@@ -6,12 +6,19 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 04:24:51 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/03 09:23:22 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/04 04:52:00 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdio.h>
+
+void	put_pixel_to_image(char *img_data, int x, int y, int color)
+{
+	int	offset;
+
+	offset = (y * 800 + x) * 4;
+	*(unsigned int *)(img_data + offset) = color;
+}
 
 t_line	init_line(t_point a, t_point b)
 {
@@ -36,13 +43,11 @@ void	draw_line(t_fdf *fdf, t_point a, t_point b)
 	int		err;
 	int		e2;
 
-	printf("adsad");
 	line = init_line(a, b);
-	printf("adsad%d", line.sx);
 	err = line.dx - line.dy;
 	while (1)
 	{
-		mlx_pixel_put(fdf->mlx, fdf->win, a.x, a.y, a.color);
+		put_pixel_to_image(fdf->img_data, a.x, a.y, a.color);
 		if (a.x == b.x && a.y == b.y)
 			break ;
 		e2 = 2 * err;
@@ -56,5 +61,23 @@ void	draw_line(t_fdf *fdf, t_point a, t_point b)
 			err += line.dx;
 			a.y += line.sy;
 		}
+	}
+}
+
+void	fill_rect(t_fdf *fdf, t_point a, t_point b)
+{
+	int	x;
+	int	y;
+
+	y = a.y;
+	while (y < b.y)
+	{
+		x = a.x;
+		while (x < b.x)
+		{
+			put_pixel_to_image(fdf->img_data, x, y, a.color);
+			x++;
+		}
+		y++;
 	}
 }
