@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 05:54:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/04 09:04:55 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/05 06:21:57 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ void	draw_line_between_points(t_fdf *fdf, int x, int y)
 
 	current_point = gli(fdf->map, y * fdf->width + x);
 	point1 = (t_point *)current_point->content;
+	if (point1->x + fdf->offset_x < 0 || point1->y + fdf->offset_y < 0
+		|| point1->x + fdf->offset_x > fdf->screen_width
+		|| point1->y + fdf->offset_y > fdf->screen_height)
+		return ;
 	if (x < fdf->width - 1)
 	{
 		current_point = gli(fdf->map, y * fdf->width + (x + 1));
@@ -45,8 +49,8 @@ void	process_row(t_fdf *fdf, int y)
 {
 	int	x;
 
-	x = 0;
-	while (x < fdf->width)
+	x = 0 + fdf->offset_x;
+	while (x < fdf->width && x < fdf->screen_width)
 	{
 		draw_line_between_points(fdf, x, y);
 		x++;
@@ -57,8 +61,8 @@ void	draw_map(t_fdf *fdf)
 {
 	int	y;
 
-	y = 0;
-	while (y < fdf->height)
+	y = 0 + fdf->offset_y;
+	while (y < fdf->height && y < fdf->screen_height)
 	{
 		process_row(fdf, y);
 		y++;

@@ -1,5 +1,5 @@
 NAME = fdf
-CC = cc
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 MLX_DIR = ./minilibx
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm

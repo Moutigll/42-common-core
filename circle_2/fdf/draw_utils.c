@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 04:24:51 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/04 09:47:41 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/05 05:49:06 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	draw_line(t_fdf *fdf, t_point a, t_point b)
 	err = line.dx - line.dy;
 	while (1)
 	{
-		put_pixel_to_image(fdf->img_data, ax, ay, a.color);
+		put_pixel_to_image(fdf->img_data, ax + fdf->offset_x, ay + fdf->offset_y, a.color);
 		if (ax == bx && ay == by)
 			break ;
 		e2 = 2 * err;

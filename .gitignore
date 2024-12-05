@@ -3,3 +3,6 @@ circle_2/pipex/out
 circle_2/pipex/outfile
 .gitignore
 circle_2/pipex/pipexMedic/
+circle_2/pipex/test_file.txt
+/.vscode
+/circle_2/fdf/minilibx
