@@ -1,6 +1,6 @@
 NAME = fdf
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fPIC
 MLX_DIR = ./minilibx
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 INCLUDES = -I$(MLX_DIR) -I./libft/include
@@ -12,7 +12,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX_FLAGS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX_FLAGS) $(LIBFT) -no-pie
 
 $(LIBFT):
 	make -C ./libft

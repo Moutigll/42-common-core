@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:53:51 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/05 05:06:06 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/05 19:00:28 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ char	**read_and_split_line(int fd)
 
 void	add_points_to_map(char **split, int y, t_fdf *fdf)
 {
-	int		x;
-	t_point	*new_point;
-	char	**value_and_color;
+	int			x;
+	t_point		*new_point;
+	char		**value_and_color;
+	int			z_value;
 
 	x = 0;
 	while (split[x])
@@ -57,20 +58,25 @@ void	add_points_to_map(char **split, int y, t_fdf *fdf)
 			write(1, "Error: Memory allocation failed for point\n", 41);
 			exit(1);
 		}
-		new_point->x = (x * 20) + 150;
-		new_point->y = (y * 20) + 150;
+		new_point->x = (x * fdf->scale) + fdf->offset_x;
+		new_point->y = (y * fdf->scale) + fdf->offset_y;
 		value_and_color = ft_split(split[x], ',');
-		new_point->z = ft_atoi(value_and_color[0]) * 10;
+		z_value = ft_atoi(value_and_color[0]);
+		new_point->z = z_value * fdf->amplitude;
 		if (value_and_color[1] != NULL)
 		{
-			unsigned int color = 0;
-			char *color_str = value_and_color[1];
+			unsigned int	color;
+			char			*color_str;
+			color = 0;
+			color_str = value_and_color[1];
 			while (*color_str)
 			{
 				color = color * 16;
-				color += (*color_str >= '0' && *color_str <= '9') ? (*color_str - '0') :
-						 (*color_str >= 'A' && *color_str <= 'F') ? (*color_str - 'A' + 10) :
-						 (*color_str - 'a' + 10);
+				color += (*color_str >= '0' && *color_str <= '9') ?
+							(*color_str - '0') :
+							(*color_str >= 'A' && *color_str <= 'F') ?
+								(*color_str - 'A' + 10) :
+								(*color_str - 'a' + 10);
 				color_str++;
 			}
 			new_point->color = color;
@@ -82,7 +88,6 @@ void	add_points_to_map(char **split, int y, t_fdf *fdf)
 		x++;
 	}
 }
-
 
 void	get_map(int fd, t_fdf *fdf)
 {

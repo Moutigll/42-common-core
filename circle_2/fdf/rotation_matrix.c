@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 08:56:05 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/05 06:04:30 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/05 19:17:20 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,30 @@ void	rotate_point(t_point *point, double angle_x,
 	point->z = temp_z;
 }
 
-void	apply_rotation(t_list *points, double angle_x,
+void	apply_rotation(t_fdf *fdf, double angle_x,
 	double angle_y, double angle_z)
 {
 	t_list	*current;
-	t_point	*point;
+	t_list	*original;
+	t_point	*original_point;
+	t_point	*transformed_point;
 
-	current = points;
-	while (current)
+	current = fdf->map;
+	original = fdf->original_map;
+	while (current && original)
 	{
-		point = (t_point *)current->content;
-		rotate_point(point, angle_x, angle_y, angle_z);
+		original_point = (t_point *)original->content;
+		transformed_point = (t_point *)current->content;
+
+		// Copie des coordonnées originales dans le point transformé
+		transformed_point->x = original_point->x;
+		transformed_point->y = original_point->y;
+		transformed_point->z = original_point->z;
+
+		// Appliquer la rotation sur le point transformé
+		rotate_point(transformed_point, angle_x, angle_y, angle_z);
+
 		current = current->next;
+		original = original->next;
 	}
 }

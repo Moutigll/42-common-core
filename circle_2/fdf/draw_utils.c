@@ -6,21 +6,20 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 04:24:51 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/05 05:49:06 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:47:54 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	put_pixel_to_image(char *img_data, int x, int y, int color)
+void	put_pixel_to_image(t_fdf *fdf, int x, int y, int color)
 {
 	int	offset;
 
-	if (x >= 0 && x < 800 && y >= 0 && y < 800)
-	{
-		offset = (y * 800 + x) * 4;
-		*(unsigned int *)(img_data + offset) = color;
-	}
+	if (x < 0 || x >= fdf->screen_width || y < 0 || y >= fdf->screen_height)
+		return ;
+	offset = ((int)y * fdf->screen_width + (int)x) * 4;
+	*(unsigned int *)((char *)fdf->img_data + offset) = color;
 }
 
 t_line	init_line(t_point a, t_point b)
@@ -54,12 +53,13 @@ void	draw_line(t_fdf *fdf, t_point a, t_point b)
 	ay = (int)a.y;
 	bx = (int)b.x;
 	by = (int)b.y;
+
 	line = init_line((t_point){ax, ay, a.z, a.color},
 			(t_point){bx, by, b.z, b.color});
 	err = line.dx - line.dy;
 	while (1)
 	{
-		put_pixel_to_image(fdf->img_data, ax + fdf->offset_x, ay + fdf->offset_y, a.color);
+		put_pixel_to_image(fdf, ax + fdf->offset_x, ay + fdf->offset_y, a.color);
 		if (ax == bx && ay == by)
 			break ;
 		e2 = 2 * err;
@@ -76,7 +76,6 @@ void	draw_line(t_fdf *fdf, t_point a, t_point b)
 	}
 }
 
-
 void	fill_rect(t_fdf *fdf, t_point a, t_point b)
 {
 	int	x;
@@ -88,7 +87,7 @@ void	fill_rect(t_fdf *fdf, t_point a, t_point b)
 		x = (int)a.x;
 		while (x < (int)b.x)
 		{
-			put_pixel_to_image(fdf->img_data, x, y, a.color);
+			put_pixel_to_image(fdf, x, y, a.color);
 			x++;
 		}
 		y++;
