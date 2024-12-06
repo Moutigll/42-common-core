@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:53:51 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/05 19:00:28 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:05:37 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void	add_points_to_map(char **split, int y, t_fdf *fdf)
 			write(1, "Error: Memory allocation failed for point\n", 41);
 			exit(1);
 		}
-		new_point->x = (x * fdf->scale) + fdf->offset_x;
-		new_point->y = (y * fdf->scale) + fdf->offset_y;
+		new_point->x = x;
+		new_point->y = y;
 		value_and_color = ft_split(split[x], ',');
 		z_value = ft_atoi(value_and_color[0]);
 		new_point->z = z_value * fdf->amplitude;
@@ -118,7 +118,8 @@ void	get_map(int fd, t_fdf *fdf)
 
 void	parse_map(int argc, char **argv, t_fdf *fdf)
 {
-	int	fd;
+	int		fd;
+
 
 	if (argc != 2)
 	{
@@ -132,5 +133,6 @@ void	parse_map(int argc, char **argv, t_fdf *fdf)
 		exit(1);
 	}
 	get_map(fd, fdf);
+
 	close(fd);
 }

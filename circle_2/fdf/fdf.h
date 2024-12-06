@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 04:11:04 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/05 19:01:46 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:27:16 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #define KEY_RIGHT 65363
 #define KEY_CTRL 65507
 #define KEY_SPC 32
+#define KEY_TAB 65289
 
 typedef struct s_fdf
 {
@@ -42,13 +43,14 @@ typedef struct s_fdf
 	int		height;
 	int		scale;
 	int		screen_height;
-	double	screen_width;
+	int		screen_width;
 	double	rotation_angle_x;
 	double	rotation_angle_y;
-	int		rotation_angle_z;
+	double	rotation_angle_z;
 	int		offset_x;
 	int		offset_y;
 	int		amplitude;
+	int		axes;
 }	t_fdf;
 
 typedef struct s_point
@@ -76,3 +78,6 @@ void	apply_rotation(t_fdf *fdf, double angle_x,
 t_list	*gli(t_list *lst, int index);
 void	rotate_point(t_point *point, double angle_x,
 			double angle_y, double angle_z);
+void	draw_axes(t_fdf *fdf);
+int		key_hook(int keycode, t_fdf *fdf);
+void	clear_image(t_fdf *fdf, int color);

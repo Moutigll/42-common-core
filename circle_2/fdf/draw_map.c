@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 05:54:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/05 19:27:59 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:27:26 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,24 @@ t_list	*gli(t_list *lst, int index)
 	while (index--)
 		lst = lst->next;
 	return (lst);
+}
+
+void	clear_image(t_fdf *fdf, int color)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < fdf->screen_height)
+	{
+		x = 0;
+		while (x < fdf->screen_width)
+		{
+			put_pixel_to_image(fdf, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }
 
 void	draw_line_between_points(t_fdf *fdf, int x, int y)
@@ -44,21 +62,9 @@ void	draw_line_between_points(t_fdf *fdf, int x, int y)
 void	process_row(t_fdf *fdf, int y)
 {
 	int	x;
-	int	x_start;
-	int	x_end;
 
-	if ((y * fdf->scale + fdf->offset_y < 0)
-		|| (y * fdf->scale + fdf->offset_y >= fdf->screen_height))
-		return ;
-	if (fdf->offset_x < 0)
-		x_start = -fdf->offset_x / fdf->scale;
-	else
-		x_start = 0;
-	x_end = (fdf->screen_width - fdf->offset_x) / fdf->scale;
-	if (x_end > fdf->width)
-		x_end = fdf->width;
-	x = x_start;
-	while (x < x_end)
+	x = 0;
+	while (x < fdf->width)
 	{
 		draw_line_between_points(fdf, x, y);
 		x++;
@@ -68,21 +74,13 @@ void	process_row(t_fdf *fdf, int y)
 void	draw_map(t_fdf *fdf)
 {
 	int	y;
-	int	y_start;
-	int	y_end;
 
-	if (fdf->offset_y < 0)
-		y_start = -fdf->offset_y / fdf->scale;
-	else
-		y_start = 0;
-	y_end = (fdf->screen_height - fdf->offset_y) / fdf->scale;
-	if (y_end > fdf->height)
-		y_end = fdf->height;
-	y = y_start;
-	while (y < y_end)
+	y = 0;
+	while (y < fdf->height)
 	{
 		process_row(fdf, y);
 		y++;
 	}
+	draw_axes(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 }
