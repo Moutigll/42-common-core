@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:26:11 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/06 16:30:56 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/07 23:16:21 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ t_list	*copy_list(t_list *original, t_fdf *fdf)
 	t_point	*new_point;
 	t_point	*original_point;
 
+	fdf->z_max = 0;
+	fdf->z_min = 0;
 	new_list = NULL;
 	while (original)
 	{
@@ -66,6 +68,11 @@ t_list	*copy_list(t_list *original, t_fdf *fdf)
 		*new_point = *original_point;
 		new_point->x = (fdf->scale * original_point->x - (fdf->width * fdf->scale) * 0.5) + fdf->scale / 2;
 		new_point->y = (fdf->scale * original_point->y - (fdf->height * fdf->scale) * 0.5) + fdf->scale / 2;
+		new_point->z = original_point->z;
+		if (new_point->z > fdf->z_max)
+			fdf->z_max = new_point->z;
+		if (new_point->z < fdf->z_min)
+			fdf->z_min = new_point->z;
 		new_node = ft_lstnew(new_point);
 		if (!new_node)
 		{
@@ -89,10 +96,10 @@ int	main(int argc, char **argv)
 		return (1);
 	fdf->screen_height = 995;
 	fdf->screen_width = 1920;
-	fdf->offset_x = 400;
-	fdf->offset_y = 400;
-	fdf->scale = 20;
-	fdf->amplitude = 20;
+	fdf->offset_x = 600;
+	fdf->offset_y = 550;
+	fdf->scale = 8;
+	fdf->amplitude = 8;
 	fdf->axes = 0;
 	parse_map(argc, argv, fdf);
 	fdf->original_map = copy_list(fdf->map, fdf);
@@ -102,7 +109,10 @@ int	main(int argc, char **argv)
 	fdf->img = mlx_new_image(fdf->mlx, fdf->screen_width, fdf->screen_height);
 	fdf->img_data = mlx_get_data_addr(fdf->img, &fdf->bpp,
 			&fdf->size_line, &fdf->endian);
-	apply_rotation(fdf, 0, 0, 0);
+	apply_rotation(fdf, 0.8, 0.05, -0.4);
+	fdf->rotation_angle_x = 0.8;
+	fdf->rotation_angle_y = 0.05;
+	fdf->rotation_angle_z = -0.4;
 	draw_map(fdf);
 	mlx_hook(fdf->win, 17, 0, close_window, fdf);
 	mlx_hook(fdf->win, 2, 1L << 0, key_hook, fdf);

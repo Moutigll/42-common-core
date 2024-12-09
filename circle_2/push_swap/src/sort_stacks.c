@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:14:07 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/23 15:42:59 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/09 02:33:59 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	sort2(t_stack *stack_a, t_stack *stack_b)
 void	sort_stacks(t_stack *stack_a,
 			t_stack *stack_b)
 {
-	run_tests(stack_a, stack_b);
 	push_stack(stack_a, stack_b, "pb\n");
 	if (stack_a->size < 4)
 		handle_len5(stack_a, stack_b);

@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:02:10 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/16 17:46:05 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/09 02:33:08 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <stdlib.h>
 
-#include "printf.h"
+#include "../../../libft/include/libft.h"
 
 // A node in a circular doubly linked list
 typedef struct circular_list

@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 13:36:41 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/28 13:11:43 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/09 02:29:23 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-#include "printf.h"
-
+#include "../../libft/include/libft.h"
 typedef struct s_pipex
 {
 	int		in_fd;

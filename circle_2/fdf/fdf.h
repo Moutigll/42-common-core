@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 04:11:04 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/06 16:27:16 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/09 02:35:37 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 #include <math.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include "minilibx/mlx.h"
-#include "libft/include/libft.h"
+#include "../../libft/include/libft.h"
 
 #define KEY_UP 65362
 #define KEY_DOWN 65364
@@ -50,6 +49,9 @@ typedef struct s_fdf
 	int		offset_x;
 	int		offset_y;
 	int		amplitude;
+	int		z_min;
+	int		z_max;
+	int		color_mode;
 	int		axes;
 }	t_fdf;
 
@@ -70,7 +72,7 @@ typedef struct s_line
 }	t_line;
 
 void	draw_line(t_fdf *fdf, t_point a, t_point b);
-void	put_pixel_to_image(t_fdf *fdf, int x, int y, int color);
+void	put_pixel_to_image(t_fdf *fdf, int x, int y, float z, int color);
 void	parse_map(int argc, char **argv, t_fdf *fdf);
 void	draw_map(t_fdf *fdf);
 void	apply_rotation(t_fdf *fdf, double angle_x,

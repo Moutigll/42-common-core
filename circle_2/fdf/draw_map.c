@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 05:54:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/06 16:27:26 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/07 23:24:06 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	clear_image(t_fdf *fdf, int color)
 		x = 0;
 		while (x < fdf->screen_width)
 		{
-			put_pixel_to_image(fdf, x, y, color);
+			put_pixel_to_image(fdf, x, y, 0, color);
 			x++;
 		}
 		y++;

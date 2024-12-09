@@ -6,13 +6,13 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:53:40 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/10/22 20:00:01 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/09 02:25:01 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "libft/libft.h"
+#include "../../libft/include/libft.h"
 #include <stdarg.h>
 
 typedef unsigned long long	t_addr;
