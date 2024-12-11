@@ -1,37 +1,46 @@
-NAME = fdf
+NAME := fdf
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fPIC
-INCLUDES = -I$(MLX_DIR) -I./libft/include -Iinclude
+CC := gcc
+CFLAGS := -Wall -Wextra -Werror -Wunreachable-code -Ofast
 
-MLX_DIR = ./minilibx
-MLX_FLAGS = -L$(MLX_DIR) -lmlx42 -ldl -lglfw -pthread -lm
+MLX_DIR := ../../MLX42
+LIBFT_DIR := ../../libft
+LIBFT := $(LIBFT_DIR)/libft.a
 
-LIBFT_DIR = ../../libft
-LIBFT = $(LIBFT_DIR)/libft.a
+HEADERS := -I$(MLX_DIR)/include -I$(LIBFT_DIR)/include -Iinclude
+MLX_FLAGS := $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-SRCS = main.c draw_utils.c parsing.c draw_map.c rotation_matrix.c hooks.c
-OBJS = $(SRCS:.c=.o)
+SRCS := main.c parse_map.c draw_utils.c rotation.c
+OBJS := $(SRCS:.c=.o)
 
-all: $(NAME)
+all: libmlx libft $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX_FLAGS) $(LIBFT) -no-pie
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX_FLAGS) $(LIBFT)
+	@echo "Compilation de $(NAME) réussie."
 
-$(LIBFT):
-	make -C $(LIBFT_DIR)
+libft:
+	@make -C $(LIBFT_DIR)
+
+libmlx:
+	@cmake $(MLX_DIR) -B $(MLX_DIR)/build
+	@make -C $(MLX_DIR)/build -j4
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
+	@echo "Compilé : $(notdir $<)"
 
 clean:
-	rm -f $(OBJS)
-	make -C $(LIBFT_DIR) clean
+	@rm -f $(OBJS)
+	@make -C $(LIBFT_DIR) clean
+	@rm -rf $(MLX_DIR)/build
+	@echo "Nettoyage des fichiers objets terminé."
 
 fclean: clean
-	rm -f $(NAME)
-	make -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME)
+	@make -C $(LIBFT_DIR) fclean
+	@echo "Nettoyage complet terminé."
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re libmlx libft

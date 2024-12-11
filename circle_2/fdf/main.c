@@ -5,117 +5,166 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 13:26:11 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/07 23:16:21 by ele-lean         ###   ########.fr       */
+/*   Created: 2024/12/09 03:17:15 by ele-lean          #+#    #+#             */
+/*   Updated: 2024/12/11 14:30:17 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "header.h"
 
-int	close_window(t_fdf *fdf)
+#define MOVE_SPEED 10
+
+void draw_map(mlx_image_t *img, t_map *map)
 {
-	mlx_destroy_window(fdf->mlx, fdf->win);
-	mlx_destroy_image(fdf->mlx, fdf->img);
-	ft_lstclear(&fdf->map, free);
-	free(fdf);
-	exit(0);
-	return (0);
-}
+	int x;
+	int y;
 
-void	draw_axes(t_fdf *fdf)
-{
-	t_point	x_axis;
-	t_point	y_axis;
-	t_point	z_axis;
+	fill_rect(img, 0, 0, WIDTH, HEIGHT, 0x00000000);
 
-	if (fdf->axes)
+	y = 0;
+	while (y < map->height)
 	{
-		x_axis = (t_point){250, 0, 0, 0xFF0000};
-		y_axis = (t_point){0, 250, 0, 0x0000FF};
-		z_axis = (t_point){0, 0, 250, 0x00FF00};
-		rotate_point(&x_axis, fdf->rotation_angle_x,
-			fdf->rotation_angle_y, fdf->rotation_angle_z);
-		rotate_point(&y_axis, fdf->rotation_angle_x,
-			fdf->rotation_angle_y, fdf->rotation_angle_z);
-		rotate_point(&z_axis, fdf->rotation_angle_x,
-			fdf->rotation_angle_y, fdf->rotation_angle_z);
-		draw_line(fdf, (t_point){0, 0, 0, 0xFF0000}, x_axis);
-		draw_line(fdf, (t_point){0, 0, 0, 0x0000FF}, y_axis);
-		draw_line(fdf, (t_point){0, 0, 0, 0x00FF00}, z_axis);
+		x = 0;
+		while (x < map->width)
+		{
+			if (x < map->width - 1)
+				draw_line(img, map->points[y][x], map->points[y][x + 1]);
+			if (y < map->height - 1)
+				draw_line(img, map->points[y][x], map->points[y + 1][x]);
+			x++;
+		}
+		y++;
 	}
 }
 
-t_list	*copy_list(t_list *original, t_fdf *fdf)
+void key_hook(mlx_key_data_t keydata, void *param)
 {
-	t_list	*new_list;
-	t_list	*new_node;
-	t_point	*new_point;
-	t_point	*original_point;
+	t_settings *settings;
+	mlx_image_t *img;
+	t_map *map;
+	int prev_offset_x;
+	int prev_offset_y;
 
-	fdf->z_max = 0;
-	fdf->z_min = 0;
-	new_list = NULL;
-	while (original)
+	settings = (t_settings *)param;
+	img = settings->img;
+	map = settings->map;
+
+	prev_offset_x = settings->offset_x;
+	prev_offset_y = settings->offset_y;
+
+	if (keydata.key == MLX_KEY_LEFT_CONTROL)
 	{
-		original_point = (t_point *)original->content;
-		new_point = malloc(sizeof(t_point));
-		if (!new_point)
-		{
-			ft_lstclear(&new_list, free);
-			write(1, "Error: Memory allocation failed while copying list\n", 51);
-			exit(1);
-		}
-		*new_point = *original_point;
-		new_point->x = (fdf->scale * original_point->x - (fdf->width * fdf->scale) * 0.5) + fdf->scale / 2;
-		new_point->y = (fdf->scale * original_point->y - (fdf->height * fdf->scale) * 0.5) + fdf->scale / 2;
-		new_point->z = original_point->z;
-		if (new_point->z > fdf->z_max)
-			fdf->z_max = new_point->z;
-		if (new_point->z < fdf->z_min)
-			fdf->z_min = new_point->z;
-		new_node = ft_lstnew(new_point);
-		if (!new_node)
-		{
-			free(new_point);
-			ft_lstclear(&new_list, free);
-			write(1, "Error: Memory allocation failed for new node\n", 45);
-			exit(1);
-		}
-		ft_lstadd_back(&new_list, new_node);
-		original = original->next;
+		settings->control = !settings->control;
+		printf("Control mode: %s\n", settings->control ? "ON" : "OFF");
+		keydata.key = 0;
 	}
-	return (new_list);
+
+	if (settings->control)
+	{
+		if (keydata.key == MLX_KEY_UP)
+			settings->rotation_angle_x += 0.05;
+		else if (keydata.key == MLX_KEY_DOWN)
+			settings->rotation_angle_x -= 0.05;
+		else if (keydata.key == MLX_KEY_LEFT)
+			settings->rotation_angle_y += 0.05;
+		else if (keydata.key == MLX_KEY_RIGHT)
+			settings->rotation_angle_y -= 0.05;
+		rotate_map(map, settings->rotation_angle_x, settings->rotation_angle_y, settings);
+	}
+	else
+	{
+		if (keydata.key == MLX_KEY_UP)
+			settings->offset_y -= MOVE_SPEED;
+		else if (keydata.key == MLX_KEY_DOWN)
+			settings->offset_y += MOVE_SPEED;
+		else if (keydata.key == MLX_KEY_LEFT)
+			settings->offset_x -= MOVE_SPEED;
+		else if (keydata.key == MLX_KEY_RIGHT)
+			settings->offset_x += MOVE_SPEED;
+
+		int delta_x = settings->offset_x - prev_offset_x;
+		int delta_y = settings->offset_y - prev_offset_y;
+
+		for (int y = 0; y < map->height; y++)
+		{
+			for (int x = 0; x < map->width; x++)
+			{
+				map->points[y][x].x += delta_x;
+				map->points[y][x].y += delta_y;
+			}
+		}
+
+	}
+	draw_map(img, map);
 }
 
-int	main(int argc, char **argv)
-{
-	t_fdf	*fdf;
 
-	fdf = (t_fdf *)malloc(sizeof(t_fdf));
-	if (!fdf)
+
+int main(int argc, char **argv)
+{
+	t_map *map;
+	mlx_t *mlx;
+	mlx_image_t *img;
+	t_settings *settings;
+
+	if (argc != 2)
+		return ((ft_printf("Usage: %s <map>\n", argv[0])), 1);
+
+	settings = malloc(sizeof(t_settings));
+	if (!settings)
 		return (1);
-	fdf->screen_height = 995;
-	fdf->screen_width = 1920;
-	fdf->offset_x = 600;
-	fdf->offset_y = 550;
-	fdf->scale = 8;
-	fdf->amplitude = 8;
-	fdf->axes = 0;
-	parse_map(argc, argv, fdf);
-	fdf->original_map = copy_list(fdf->map, fdf);
-	fdf->mlx = mlx_init();
-	fdf->win = mlx_new_window(fdf->mlx, fdf->screen_width, fdf->screen_height,
-			"fdf");
-	fdf->img = mlx_new_image(fdf->mlx, fdf->screen_width, fdf->screen_height);
-	fdf->img_data = mlx_get_data_addr(fdf->img, &fdf->bpp,
-			&fdf->size_line, &fdf->endian);
-	apply_rotation(fdf, 0.8, 0.05, -0.4);
-	fdf->rotation_angle_x = 0.8;
-	fdf->rotation_angle_y = 0.05;
-	fdf->rotation_angle_z = -0.4;
-	draw_map(fdf);
-	mlx_hook(fdf->win, 17, 0, close_window, fdf);
-	mlx_hook(fdf->win, 2, 1L << 0, key_hook, fdf);
-	mlx_loop(fdf->mlx);
+
+	settings->scale = 2;
+	settings->z_scale = 2;
+	settings->offset_x = WIDTH / 2;
+	settings->offset_y = HEIGHT / 2;
+
+	map = parse_map(argv[1], settings);
+	if (!map)
+		return (1);
+
+	mlx = mlx_init(WIDTH, HEIGHT, "fdf", true);
+	if (!mlx)
+	{
+		ft_printf("Error: MLX42 initialization failed\n");
+		free_map(map);
+		return (1);
+	}
+
+	img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	if (!img)
+	{
+		ft_printf("Error: Failed to create image\n");
+		mlx_terminate(mlx);
+		free_map(map);
+		return (1);
+	}
+
+	settings->img = img;
+	settings->map = map;
+	settings->rotation_angle_x = 0.5;
+	settings->rotation_angle_y = 0.5;
+	settings->control = 0;
+	rotate_map(map, 0.5, 0.5, settings);
+	draw_map(img, map);
+
+	if (mlx_image_to_window(mlx, img, 0, 0) < 0)
+	{
+		ft_printf("Error: Failed to display image\n");
+		mlx_delete_image(mlx, img);
+		mlx_terminate(mlx);
+		free_map(map);
+		return (1);
+	}
+
+	mlx_key_hook(mlx, key_hook, settings);
+
+	printf("Number of points: %d\n", map->width * map->height);
+	mlx_loop(mlx);
+
+	mlx_delete_image(mlx, img);
+	mlx_terminate(mlx);
+	free_map(map);
+
 	return (0);
 }

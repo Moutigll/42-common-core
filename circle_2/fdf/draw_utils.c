@@ -5,126 +5,93 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 04:24:51 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/07 23:27:51 by ele-lean         ###   ########.fr       */
+/*   Created: 2024/12/10 13:06:55 by ele-lean          #+#    #+#             */
+/*   Updated: 2024/12/11 14:28:55 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "header.h"
 
-unsigned int	get_gradient_color(int min, int max, int value)
+int get_rgba(int r, int g, int b, int a)
 {
-	float			ratio;
-	unsigned int	color;
-	int				red;
-	int				blue;
-
-	if (value <= min)
-		return (0x0000FF);
-	if (value >= max)
-		return (0xFF0000);
-	ratio = (float)(value - min) / (max - min);
-	red = (int)(255 * ratio);
-	blue = 255 - red;
-	color = (red << 16) | (0 << 8) | blue;
-	return (color);
+    return (r << 24) | (g << 16) | (b << 8) | a;
 }
 
-void	put_pixel_to_image(t_fdf *fdf, int x, int y, float z, int color)
-{
-	int	offset;
 
-	color = get_gradient_color(fdf->z_min, fdf->z_max, z);
-	if (x < 0 || x >= fdf->screen_width || y < 0 || y >= fdf->screen_height)
-		return ;
-	offset = ((int)y * fdf->screen_width + (int)x) * 4;
-	*(unsigned int *)((char *)fdf->img_data + offset) = color;
+void	put_pixel_to_image(mlx_image_t *img, int x, int y, unsigned int color)
+{
+	if (x >= 0 && x < (int)img->width && y >= 0 && y < (int)img->height)
+		((uint32_t *)img->pixels)[y * img->width + x] = color;
 }
 
-t_line	init_line(t_point a, t_point b)
+void	draw_line(mlx_image_t *img, t_point p0, t_point p1)
 {
-	t_line	line;
-
-	line.dx = fabs(b.x - a.x);
-	line.dy = fabs(b.y - a.y);
-	if (a.x < b.x)
-		line.sx = 1;
-	else
-		line.sx = -1;
-	if (a.y < b.y)
-		line.sy = 1;
-	else
-		line.sy = -1;
-	return (line);
-}
-
-void	draw_line(t_fdf *fdf, t_point a, t_point b)
-{
-	t_line	line;
+	int		dx;
+	int		dy;
+	int		sx;
+	int		sy;
 	int		err;
 	int		e2;
-	int		ax;
-	int		ay;
-	int		bx;
-	int		by;
-	float	z; // Variable pour stocker la position z interpolée
+	float	percentage;
 
-	ax = (int)a.x;
-	ay = (int)a.y;
-	bx = (int)b.x;
-	by = (int)b.y;
+	dx = abs(p1.x - p0.x);
+	dy = abs(p1.y - p0.y);
 
-	// Initialisation de la ligne, en prenant en compte z et la couleur
-	line = init_line((t_point){ax, ay, a.z, a.color},
-			(t_point){bx, by, b.z, b.color});
-	err = line.dx - line.dy;
+	if (p0.x < p1.x)
+		sx = 1;
+	else
+		sx = -1;
 
-	// Initialisation de z avec la valeur de a.z (position de départ)
-	z = a.z;
+	if (p0.y < p1.y)
+		sy = 1;
+	else
+		sy = -1;
 
-	while (1)
+	err = dx - dy;
+	percentage = 0.0;
+
+	while (p0.x != p1.x || p0.y != p1.y)
 	{
-		// Interpolation de la valeur z en fonction de l'avancement sur la ligne
-		put_pixel_to_image(fdf, ax + fdf->offset_x, ay + fdf->offset_y, z, a.color);
+		unsigned int red = ((1 - percentage) * ((p0.color >> 16) & 0xFF)) +
+						   (percentage * ((p1.color >> 16) & 0xFF));
+		unsigned int green = ((1 - percentage) * ((p0.color >> 8) & 0xFF)) +
+							 (percentage * ((p1.color >> 8) & 0xFF));
+		unsigned int blue = ((1 - percentage) * (p0.color & 0xFF)) +
+							(percentage * (p1.color & 0xFF));
+		unsigned int color = (0xFF << 24) | (red << 16) | (green << 8) | blue;
 
-		// Condition de fin si le point atteint le point d'arrivée
-		if (ax == bx && ay == by)
-			break ;
+		put_pixel_to_image(img, p0.x, p0.y, color);
 
 		e2 = 2 * err;
-		
-		// Mise à jour de z en fonction de l'avancement sur la ligne
-		if (e2 > -line.dy)
+		if (e2 > -dy)
 		{
-			err -= line.dy;
-			ax += line.sx;
-			// Interpolation linéaire de z pour chaque pixel
-			z = a.z + (float)(ax - a.x) / (bx - ax) * (b.z - a.z);
+			err -= dy;
+			p0.x += sx;
 		}
-		if (e2 < line.dx)
+		if (e2 < dx)
 		{
-			err += line.dx;
-			ay += line.sy;
-			// Interpolation linéaire de z pour chaque pixel
-			z = a.z + (float)(ay - a.y) / (by - ay) * (b.z - a.z);
+			err += dx;
+			p0.y += sy;
 		}
+
+		percentage = (float)(abs(p0.x - p1.x) + abs(p0.y - p1.y)) / (dx + dy);
 	}
 }
 
-void	fill_rect(t_fdf *fdf, t_point a, t_point b)
+void	fill_rect(mlx_image_t *img, int x, int y, int width, int height, unsigned int color)
 {
-	int	x;
-	int	y;
+	int i;
+	int j;
 
-	y = (int)a.y;
-	while (y < (int)b.y)
+	i = 0;
+	while (i < height)
 	{
-		x = (int)a.x;
-		while (x < (int)b.x)
+		j = 0;
+		while (j < width)
 		{
-			put_pixel_to_image(fdf, x, y, 0, a.color);
-			x++;
+			put_pixel_to_image(img, x + j, y + i, color);
+			j++;
 		}
-		y++;
+		i++;
 	}
 }
