@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 03:08:25 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/12 17:54:23 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:36:03 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ typedef struct s_map
 typedef struct s_settings
 {
 	t_map		*map;
-	int			scale;
-	int			z_scale;
+	double		scale;
+	double		z_scale;
 	int			offset_x;
 	int			offset_y;
 	double		rotation_angle_x;
@@ -49,6 +49,7 @@ typedef struct s_settings
 	int			control;
 	int			color_mode;
 	mlx_image_t	*img;
+	mlx_t		*mlx;
 }	t_settings;
 
 t_map	*parse_map(char *file, t_settings *settings);

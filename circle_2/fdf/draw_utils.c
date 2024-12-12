@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 13:06:55 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/12 17:54:57 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:22:44 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	draw_line(t_settings *settings, t_point p0, t_point p1)
 	sy = (p0.y < p1.y) ? 1 : -1;
 
 	err = dx - dy;
-
 	while (p0.x != p1.x || p0.y != p1.y)
 	{
 		unsigned int color;

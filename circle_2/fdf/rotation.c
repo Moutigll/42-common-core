@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 08:56:05 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/12 17:47:16 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:16:03 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	rotate_map(t_map *map, double angle_x, double angle_y, t_settings *settings
 	{
 		for (x = 0; x < map->width; x++)
 		{
-			map->points[y][x].x = (settings->scale * x - (settings->map->width * settings->scale) / 2) + settings->scale / 2;
-			map->points[y][x].y = (settings->scale * y - (settings->map->height * settings->scale) / 2) + settings->scale / 2;
+			map->points[y][x].x = (int) ((settings->scale * x - (settings->map->width * settings->scale) / 2) + settings->scale / 2);
+			map->points[y][x].y = (int) ((settings->scale * y - (settings->map->height * settings->scale) / 2) + settings->scale / 2);
 
 			rotate_point(&map->points[y][x], angle_x, angle_y);
 			map->points[y][x].x += settings->offset_x;

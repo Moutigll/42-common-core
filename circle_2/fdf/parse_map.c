@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 03:40:19 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/12 17:50:12 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:19:14 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_map	*parse_map(char *file, t_settings *settings)
 			split_values = ft_split(values[x], ',');
 			if (split_values[1] != NULL)
 			{
-				map->points[y][x].z = (int)ft_atoi(split_values[0]) * settings->z_scale;
+				map->points[y][x].z = (int) ft_atoi(split_values[0]) * settings->z_scale;
 				map->points[y][x].color = (unsigned int)strtol(split_values[1], NULL, 16);
 			}
 			else
@@ -83,8 +83,8 @@ t_map	*parse_map(char *file, t_settings *settings)
 				map->z_min = map->points[y][x].z;
 			if (map->points[y][x].z > map->z_max)
 				map->z_max = map->points[y][x].z;
-			map->points[y][x].x = x * settings->scale - map->width * settings->scale / 2 + settings->offset_x;
-			map->points[y][x].y = y * settings->scale - map->height * settings->scale / 2 + settings->offset_y;
+			map->points[y][x].x = (int) (x * settings->scale - map->width * settings->scale / 2 + settings->offset_x);
+			map->points[y][x].y = (int) (y * settings->scale - map->height * settings->scale / 2 + settings->offset_y);
 			free_tab((void **)split_values);
 			x++;
 		}
@@ -93,6 +93,7 @@ t_map	*parse_map(char *file, t_settings *settings)
 		free_tab((void **)values);
 	}
 	close(fd);
+	ft_printf("Map parsed successfully\n");
 	return (map);
 }
 
