@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 03:08:25 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/11 14:10:18 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:54:23 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ typedef struct s_settings
 	double		rotation_angle_x;
 	double		rotation_angle_y;
 	int			control;
+	int			color_mode;
 	mlx_image_t	*img;
 }	t_settings;
 
 t_map	*parse_map(char *file, t_settings *settings);
 void	free_map(t_map *map);
-void	draw_line(mlx_image_t *img, t_point p0, t_point p1);
+void	draw_line(t_settings *settings, t_point p0, t_point p1);
 int		get_rgba(int r, int g, int b, int a);
 void	fill_rect(mlx_image_t *img, int x, int y, int width, int height, unsigned int color);
 void rotate_map(t_map *map, double angle_x, double angle_y, t_settings *settings);

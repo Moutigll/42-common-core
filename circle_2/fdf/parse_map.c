@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 03:40:19 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/11 12:33:19 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:50:12 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_map	*parse_map(char *file, t_settings *settings)
 	map->points = malloc(sizeof(t_point *) * map->height);
 	if (!map->points || map->height == 0)
 		return ((free(map)), NULL);
+	map->z_min = 0;
+	map->z_max = 0;
 	fd = open(file, O_RDONLY);
 	y = 0;
 	while ((line = get_next_line(fd)))
@@ -69,14 +71,18 @@ t_map	*parse_map(char *file, t_settings *settings)
 			split_values = ft_split(values[x], ',');
 			if (split_values[1] != NULL)
 			{
-				map->points[y][x].z = ft_atoi(split_values[0]) * settings->z_scale;
+				map->points[y][x].z = (int)ft_atoi(split_values[0]) * settings->z_scale;
 				map->points[y][x].color = (unsigned int)strtol(split_values[1], NULL, 16);
 			}
 			else
 			{
-				map->points[y][x].z = ft_atoi(values[x]) * settings->z_scale;
+				map->points[y][x].z = (int) ft_atoi(values[x]) * settings->z_scale;
 				map->points[y][x].color = 0xFFFFFF;
 			}
+			if (map->points[y][x].z < map->z_min)
+				map->z_min = map->points[y][x].z;
+			if (map->points[y][x].z > map->z_max)
+				map->z_max = map->points[y][x].z;
 			map->points[y][x].x = x * settings->scale - map->width * settings->scale / 2 + settings->offset_x;
 			map->points[y][x].y = y * settings->scale - map->height * settings->scale / 2 + settings->offset_y;
 			free_tab((void **)split_values);

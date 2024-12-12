@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 03:17:15 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/11 14:30:17 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:54:26 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 #define MOVE_SPEED 10
 
-void draw_map(mlx_image_t *img, t_map *map)
+void draw_map(t_settings *settings, t_map *map)
 {
 	int x;
 	int y;
 
-	fill_rect(img, 0, 0, WIDTH, HEIGHT, 0x00000000);
+	fill_rect(settings->img, 0, 0, WIDTH, HEIGHT, 0x00000000);
 
 	y = 0;
 	while (y < map->height)
@@ -28,37 +28,46 @@ void draw_map(mlx_image_t *img, t_map *map)
 		while (x < map->width)
 		{
 			if (x < map->width - 1)
-				draw_line(img, map->points[y][x], map->points[y][x + 1]);
+				draw_line(settings, map->points[y][x], map->points[y][x + 1]);
 			if (y < map->height - 1)
-				draw_line(img, map->points[y][x], map->points[y + 1][x]);
+				draw_line(settings, map->points[y][x], map->points[y + 1][x]);
 			x++;
 		}
 		y++;
 	}
 }
 
+void scroll(double xdelta, double ydelta, void* param)
+{
+	t_settings *settings;
+
+	(void)xdelta;
+	settings = (t_settings *)param;
+	if (ydelta > 0)
+		settings->scale += 1;
+	else if (ydelta < 0)
+		settings->scale -= 1;
+	rotate_map(settings->map, settings->rotation_angle_x, settings->rotation_angle_y, settings);
+	draw_map(settings, settings->map);
+}
+
 void key_hook(mlx_key_data_t keydata, void *param)
 {
 	t_settings *settings;
-	mlx_image_t *img;
 	t_map *map;
 	int prev_offset_x;
 	int prev_offset_y;
 
 	settings = (t_settings *)param;
-	img = settings->img;
 	map = settings->map;
 
 	prev_offset_x = settings->offset_x;
 	prev_offset_y = settings->offset_y;
 
 	if (keydata.key == MLX_KEY_LEFT_CONTROL)
-	{
 		settings->control = !settings->control;
-		printf("Control mode: %s\n", settings->control ? "ON" : "OFF");
-		keydata.key = 0;
-	}
-
+	else if (keydata.key == MLX_KEY_LEFT_SHIFT)
+		settings->color_mode = !settings->color_mode;
 	if (settings->control)
 	{
 		if (keydata.key == MLX_KEY_UP)
@@ -95,10 +104,8 @@ void key_hook(mlx_key_data_t keydata, void *param)
 		}
 
 	}
-	draw_map(img, map);
+	draw_map(settings, map);
 }
-
-
 
 int main(int argc, char **argv)
 {
@@ -109,20 +116,16 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 		return ((ft_printf("Usage: %s <map>\n", argv[0])), 1);
-
 	settings = malloc(sizeof(t_settings));
 	if (!settings)
 		return (1);
-
-	settings->scale = 2;
-	settings->z_scale = 2;
+	settings->scale = 1;
+	settings->z_scale = 1;
 	settings->offset_x = WIDTH / 2;
 	settings->offset_y = HEIGHT / 2;
-
 	map = parse_map(argv[1], settings);
 	if (!map)
 		return (1);
-
 	mlx = mlx_init(WIDTH, HEIGHT, "fdf", true);
 	if (!mlx)
 	{
@@ -130,7 +133,6 @@ int main(int argc, char **argv)
 		free_map(map);
 		return (1);
 	}
-
 	img = mlx_new_image(mlx, WIDTH, HEIGHT);
 	if (!img)
 	{
@@ -142,11 +144,12 @@ int main(int argc, char **argv)
 
 	settings->img = img;
 	settings->map = map;
-	settings->rotation_angle_x = 0.5;
-	settings->rotation_angle_y = 0.5;
+	settings->rotation_angle_x = 0;
+	settings->rotation_angle_y = 0;
 	settings->control = 0;
-	rotate_map(map, 0.5, 0.5, settings);
-	draw_map(img, map);
+	settings->color_mode = 0;
+	rotate_map(map, 0, 0, settings);
+	draw_map(settings, map);
 
 	if (mlx_image_to_window(mlx, img, 0, 0) < 0)
 	{
@@ -158,6 +161,7 @@ int main(int argc, char **argv)
 	}
 
 	mlx_key_hook(mlx, key_hook, settings);
+	mlx_scroll_hook(mlx, &scroll, settings);
 
 	printf("Number of points: %d\n", map->width * map->height);
 	mlx_loop(mlx);
