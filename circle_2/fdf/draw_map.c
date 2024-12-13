@@ -6,18 +6,36 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:50:33 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/13 15:51:33 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:17:10 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+void	fill_rect(mlx_image_t *img, int width, int height)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < height)
+	{
+		j = 0;
+		while (j < width)
+		{
+			put_pixel_to_image(img, j, i, 0x00000000);
+			j++;
+		}
+		i++;
+	}
+}
 
 void	draw_map(t_settings *settings, t_map *map)
 {
 	int	x;
 	int	y;
 
-	fill_rect(settings->img, 0, 0, WIDTH, HEIGHT, 0x00000000);
+	fill_rect(settings->img, WIDTH, HEIGHT);
 	y = 0;
 	while (y < map->height)
 	{

@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 08:56:05 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/12 21:15:59 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:22:38 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ void	rotate_map(t_map *map,
 	int		x;
 	int		y;
 
-	for (y = 0; y < map->height; y++)
+	y = 0;
+	while (y < map->height)
 	{
-		for (x = 0; x < map->width; x++)
+		x = 0;
+		while (x < map->width)
 		{
 			map->points[y][x].x = (int)((settings->scale * x
 						- (settings->map->width * settings->scale) / 2)
@@ -40,6 +42,8 @@ void	rotate_map(t_map *map,
 			rotate_point(&map->points[y][x], angle_x, angle_y);
 			map->points[y][x].x += settings->offset_x;
 			map->points[y][x].y += settings->offset_y;
+			x++;
 		}
+		y++;
 	}
 }

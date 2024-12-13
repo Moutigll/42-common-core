@@ -6,12 +6,11 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 13:06:55 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/13 15:52:39 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:17:04 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
 
 void	put_pixel_to_image(mlx_image_t *img, int x, int y, unsigned int color)
 {
@@ -56,70 +55,74 @@ unsigned int	get_color_from_z(int z, int z_min, int z_max)
 	return ((0xFF << 24) | (red << 16) | (green << 8) | blue);
 }
 
-void	draw_line(t_settings *settings, t_point p0, t_point p1)
+unsigned int	get_color(t_line_utils utils,
+	t_settings *settings, t_point p0, t_point p1)
 {
-	int		dx;
-	int		dy;
-	int		sx;
-	int		sy;
-	int		err;
-	int		e2;
-	float	percentage;
-	int		current_z;
+	unsigned int	color;
+	int				current_z;
+	unsigned int	red;
+	unsigned int	green;
+	unsigned int	blue;
 
-	dx = abs(p1.x - p0.x);
-	dy = abs(p1.y - p0.y);
-	sx = (p0.x < p1.x) ? 1 : -1;
-	sy = (p0.y < p1.y) ? 1 : -1;
-	err = dx - dy;
-	while (p0.x != p1.x || p0.y != p1.y)
+	if (settings->color_mode == 1)
 	{
-		unsigned int color;
-		percentage = (float)(abs(p1.x - p0.x) + abs(p1.y - p0.y)) / (dx + dy);
-		if (settings->color_mode == 1)
-		{
-			current_z = (int)(percentage * p0.z + (1 - percentage) * p1.z);
-			color = get_color_from_z(current_z, settings->map->z_min, settings->map->z_max);
-		}
-		else
-		{
-			unsigned int red = ((1 - percentage) * ((p1.color >> 16) & 0xFF)) +
-							   (percentage * ((p0.color >> 16) & 0xFF));
-			unsigned int green = ((1 - percentage) * ((p1.color >> 8) & 0xFF)) +
-								 (percentage * ((p0.color >> 8) & 0xFF));
-			unsigned int blue = ((1 - percentage) * (p1.color & 0xFF)) +
-								(percentage * (p0.color & 0xFF));
-			color = (0xFF << 24) | (red << 16) | (green << 8) | blue;
-		}
-		put_pixel_to_image(settings->img, p0.x, p0.y, color);
-		e2 = 2 * err;
-		if (e2 > -dy)
-		{
-			err -= dy;
-			p0.x += sx;
-		}
-		if (e2 < dx)
-		{
-			err += dx;
-			p0.y += sy;
-		}
+		current_z = (int)(utils.percentage * p0.z
+				+ (1 - utils.percentage) * p1.z);
+		color = get_color_from_z(current_z,
+				settings->map->z_min, settings->map->z_max);
 	}
+	else
+	{
+		red = ((1 - utils.percentage) * ((p1.color >> 16) & 0xFF))
+			+ (utils.percentage * ((p0.color >> 16) & 0xFF));
+		green = ((1 - utils.percentage) * ((p1.color >> 8) & 0xFF))
+			+ (utils.percentage * ((p0.color >> 8) & 0xFF));
+		blue = ((1 - utils.percentage) * (p1.color & 0xFF))
+			+ (utils.percentage * (p0.color & 0xFF));
+		color = (0xFF << 24) | (red << 16) | (green << 8) | blue;
+	}
+	return (color);
 }
 
-void	fill_rect(mlx_image_t *img, int x, int y, int width, int height, unsigned int color)
+t_line_utils	init_draw_line(t_point p0, t_point p1)
 {
-	int	i;
-	int	j;
+	t_line_utils	utils;
 
-	i = 0;
-	while (i < height)
+	utils.dx = abs(p1.x - p0.x);
+	utils.dy = abs(p1.y - p0.y);
+	if (p0.x < p1.x)
+		utils.sx = 1;
+	else
+		utils.sx = -1;
+	if (p0.y < p1.y)
+		utils.sy = 1;
+	else
+		utils.sy = -1;
+	utils.err = utils.dx - utils.dy;
+	return (utils);
+}
+
+void	draw_line(t_settings *settings, t_point p0, t_point p1)
+{
+	t_line_utils	utils;
+
+	utils = init_draw_line(p0, p1);
+	while (p0.x != p1.x || p0.y != p1.y)
 	{
-		j = 0;
-		while (j < width)
+		utils.percentage = (float)(abs(p1.x - p0.x)
+				+ abs(p1.y - p0.y)) / (utils.dx + utils.dy);
+		put_pixel_to_image(settings->img,
+			p0.x, p0.y, get_color(utils, settings, p0, p1));
+		utils.e2 = 2 * utils.err;
+		if (utils.e2 > -utils.dy)
 		{
-			put_pixel_to_image(img, x + j, y + i, color);
-			j++;
+			utils.err -= utils.dy;
+			p0.x += utils.sx;
 		}
-		i++;
+		if (utils.e2 < utils.dx)
+		{
+			utils.err += utils.dx;
+			p0.y += utils.sy;
+		}
 	}
 }
