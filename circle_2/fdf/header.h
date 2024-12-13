@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 03:08:25 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/12 19:35:54 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:54:39 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 #define WIDTH 1920
 #define HEIGHT 1080
+#define MOVE_SPEED 10
 
 typedef struct s_point
 {
@@ -57,9 +58,24 @@ typedef struct s_settings
     int prev_mouse_y;
 }	t_settings;
 
+//Parse
 t_map	*parse_map(char *file, t_settings *settings);
 void	free_map(t_map *map);
+
+//Hooks
+void	handle_key_offset(mlx_key_data_t keydata, t_settings *settings);
+void	handle_key_rotation(mlx_key_data_t keydata, t_settings *settings);
+void	mouse_handler(mouse_key_t button,
+			action_t action, modifier_key_t mods, void *param);
+void	mouse_move_handler(double xpos, double ypos, void *param);
+void	scroll(double xdelta, double ydelta, void *param);
+
+//Draw
+void	adjust_points(t_map *map, int y, int x, double scale_factor);
+void	draw_map(t_settings *settings, t_map *map);
 void	draw_line(t_settings *settings, t_point p0, t_point p1);
 int		get_rgba(int r, int g, int b, int a);
 void	fill_rect(mlx_image_t *img, int x, int y, int width, int height, unsigned int color);
-void rotate_map(t_map *map, double angle_x, double angle_y, t_settings *settings);
+
+void	rotate_map(t_map *map,
+			double angle_x, double angle_y, t_settings *settings);

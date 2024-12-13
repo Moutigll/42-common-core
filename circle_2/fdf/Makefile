@@ -10,7 +10,7 @@ LIBFT := $(LIBFT_DIR)/libft.a
 HEADERS := -I$(MLX_DIR)/include -I$(LIBFT_DIR)/include -Iinclude
 MLX_FLAGS := $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-SRCS := main.c parse_map.c draw_utils.c rotation.c
+SRCS := main.c parse_map.c draw_utils.c rotation.c hooks.c draw_map.c
 OBJS := $(SRCS:.c=.o)
 
 all: libmlx libft $(NAME)

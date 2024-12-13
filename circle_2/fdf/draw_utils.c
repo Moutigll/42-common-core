@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 13:06:55 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/12 21:17:27 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:52:39 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	draw_line(t_settings *settings, t_point p0, t_point p1)
 		percentage = (float)(abs(p1.x - p0.x) + abs(p1.y - p0.y)) / (dx + dy);
 		if (settings->color_mode == 1)
 		{
-			current_z = (int)((1 - percentage) * p0.z + percentage * p1.z);
+			current_z = (int)(percentage * p0.z + (1 - percentage) * p1.z);
 			color = get_color_from_z(current_z, settings->map->z_min, settings->map->z_max);
 		}
 		else
