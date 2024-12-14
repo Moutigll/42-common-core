@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 19:47:26 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/25 19:49:47 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/14 20:57:14 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	handle_child_process(t_pipex *pipex, int i, int *pipe_fd, char **envp)
 		dup2(pipe_fd[1], STDOUT_FILENO);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
+	close(pipex->in_fd);
+	close(pipex->out_fd);
 	if (pipex->cmd_args[i] && pipex->cmd_args[i][0])
 	{
 		if (access(pipex->cmd_args[i][0], X_OK) == 0)
@@ -31,8 +33,6 @@ void	handle_child_process(t_pipex *pipex, int i, int *pipe_fd, char **envp)
 		else
 			perror("Failed to execute command");
 	}
-	else
-		perror("Invalid command");
 	clean_pipex(pipex, NULL, 127);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 13:36:20 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/14 20:28:15 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:16:56 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,11 @@ int	main(int argc, char **argv, char **envp)
 	t_pipex	pipex;
 	int		i;
 
-	if (argc != 5)
-	{
-		ft_putstr_fd("Usage: ./pipex file1 cmd1 cmd2 file2\n", 2);
-		return (1);
-	}
 	ft_init_pipex(&pipex);
 	check_args(argc, argv, &pipex);
 	get_path(&pipex, envp);
+	if (pipex.here_doc)
+		handle_here_doc(argv[2], &pipex);
 	ft_parse_cmds(&pipex, argv, argc);
 	i = 0;
 	while (i < pipex.cmd_count)

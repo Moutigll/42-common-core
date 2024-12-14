@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:37:02 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/11/26 17:15:10 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/14 20:52:02 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@ void	ft_init_pipex(t_pipex *pipex)
 	pipex->here_doc = 0;
 }
 
-void	free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
-}
-
 void	clean_pipex(t_pipex *pipex, char *error, int exit_status)
 {
 	int	i;
@@ -42,13 +32,13 @@ void	clean_pipex(t_pipex *pipex, char *error, int exit_status)
 		i = 0;
 		while (i < pipex->cmd_count && pipex->cmd_args[i])
 		{
-			free_tab(pipex->cmd_args[i]);
+			free_tab((void **)pipex->cmd_args[i]);
 			i++;
 		}
 		free(pipex->cmd_args);
 	}
 	if (pipex->cmd_paths)
-		free_tab(pipex->cmd_paths);
+		free_tab((void **)pipex->cmd_paths);
 	if (pipex->in_fd != -1)
 		close(pipex->in_fd);
 	if (pipex->out_fd != -1)

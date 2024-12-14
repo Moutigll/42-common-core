@@ -6,11 +6,19 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 03:17:15 by ele-lean          #+#    #+#             */
-/*   Updated: 2024/12/13 17:12:36 by ele-lean         ###   ########.fr       */
+/*   Updated: 2024/12/14 19:24:14 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+void	exit_fdf(t_map *map, t_settings *settings, mlx_t *mlx, mlx_image_t *img)
+{
+	mlx_delete_image(mlx, img);
+	mlx_terminate(mlx);
+	free_map(map);
+	free(settings);
+}
 
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
@@ -31,6 +39,11 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		settings->color_mode = !settings->color_mode;
 	if (keydata.key == MLX_KEY_TAB)
 		settings->scale_mode = !settings->scale_mode;
+	if (keydata.key == MLX_KEY_ESCAPE)
+	{
+		exit_fdf(map, settings, settings->mlx, settings->img);
+		exit(0);
+	}
 	rotate_map(map, settings->rotation_angle_x,
 		settings->rotation_angle_y, settings);
 	draw_map(settings, map);
@@ -72,10 +85,7 @@ void	mlx_loop_stuff(t_settings *settings,
 	mlx_key_hook(mlx, key_hook, settings);
 	mlx_scroll_hook(mlx, &scroll, settings);
 	mlx_loop(mlx);
-	mlx_delete_image(mlx, img);
-	mlx_terminate(mlx);
-	free_map(map);
-	free(settings);
+	exit_fdf(map, settings, mlx, img);
 }
 
 int	main(int argc, char **argv)
