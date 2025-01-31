@@ -4,3 +4,6 @@
 [submodule "MLX42"]
 	path = MLX42
 	url = https://github.com/codam-coding-college/MLX42
+[submodule "circle_3/minishell"]
+	path = circle_3/minishell
+	url = https://github.com/Moutigll/minishell
