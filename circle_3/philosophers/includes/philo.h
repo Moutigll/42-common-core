@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:08:57 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/01/31 19:03:55 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:58:40 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <pthread.h>
 #include <sys/time.h>
 
+typedef struct s_philo	t_philo;
+
 typedef struct s_data
 {
 	int				philo_count;
@@ -27,6 +29,7 @@ typedef struct s_data
 	int				must_eat_count;
 	long			start_time;
 	int				someone_died;
+	t_philo			*philosophers;
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	*forks;
@@ -43,5 +46,18 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 }	t_philo;
 
-static int	is_positive_number(char *str);
-int			ft_atoi(const char *str);
+// utils.c
+int		is_positive_number(char *str);
+int		ft_atoi(const char *str);
+void	print_action(t_philo *philo, char *action);
+void	*check_death(void *arg);
+long	get_time_in_ms(void);
+
+// init.c
+
+int		parse_args(t_data *data, int argc, char **argv);
+t_philo	*init_philosophers(t_data *data);
+int		init_simulation(t_data *data);
+
+// philos.c
+int		start_simulation(t_data *data);
