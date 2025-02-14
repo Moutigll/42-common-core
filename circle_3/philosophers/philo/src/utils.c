@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:17:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/13 20:23:35 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:08:43 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,20 @@ long	get_time_in_ms(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	unsigned char	*str1;
+	unsigned char	*str2;
+	int				i;
+
+	i = 0;
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	while (str1[i] && str2[i] && str1[i] == str2[i])
+		i++;
+	return (str1[i] - str2[i]);
+}
+
 void	print_action(t_philo *philo, char *action)
 {
 	long	timestamp;
@@ -67,6 +81,11 @@ void	print_action(t_philo *philo, char *action)
 	data = philo->data;
 	timestamp = get_time_in_ms() - data->start_time;
 	pthread_mutex_lock(&data->write_mutex);
+	if (data->someone_died && ft_strcmp(action, "died") != 0)
+	{
+		pthread_mutex_unlock(&data->write_mutex);
+		return ;
+	}
 	printf("%ld %d %s\n", timestamp, philo->id, action);
 	pthread_mutex_unlock(&data->write_mutex);
 }

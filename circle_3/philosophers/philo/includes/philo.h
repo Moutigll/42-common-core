@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:08:57 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/13 18:58:40 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:11:32 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_philo
 int		is_positive_number(char *str);
 int		ft_atoi(const char *str);
 void	print_action(t_philo *philo, char *action);
-void	*check_death(void *arg);
 long	get_time_in_ms(void);
 
 // init.c
@@ -61,3 +60,6 @@ int		init_simulation(t_data *data);
 
 // philos.c
 int		start_simulation(t_data *data);
+
+// check.c
+void	*check(void *arg);
