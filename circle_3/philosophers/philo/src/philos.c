@@ -6,13 +6,13 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:41:55 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/14 16:12:42 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:15:25 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	take_forks(t_philo *philo)
+static int	take_forks(t_philo *philo)
 {
 	if (philo->data->philo_count == 1)
 	{
@@ -29,7 +29,7 @@ int	take_forks(t_philo *philo)
 	return (0);
 }
 
-int	eat(t_philo *philo)
+static int	eat(t_philo *philo)
 {
 	print_action(philo, "is eating");
 	pthread_mutex_lock(&philo->data->death_mutex);
@@ -42,7 +42,7 @@ int	eat(t_philo *philo)
 	return (0);
 }
 
-void	*routine(void *arg)
+static void	*routine(void *arg)
 {
 	t_philo	*philo;
 	t_data	*data;

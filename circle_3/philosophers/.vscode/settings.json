@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"philo_bonus.h": "c",
+		"types.h": "c",
+		"pthread.h": "c"
+	}
+}

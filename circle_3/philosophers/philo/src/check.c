@@ -6,13 +6,13 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:10:13 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/14 16:10:46 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:14:57 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	check_philosopher_death(t_data *data)
+static int	check_philosopher_death(t_data *data)
 {
 	int	i;
 
@@ -34,7 +34,7 @@ int	check_philosopher_death(t_data *data)
 	return (0);
 }
 
-int	check_all_philosophers_eat(t_data *data)
+static int	check_all_philosophers_eat(t_data *data)
 {
 	int	i;
 	int	finished;
