@@ -1,7 +1,7 @@
-NAME = philo
+NAME = philo_bonus
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread -g
 
 SRCS = src/main_bonus.c src/utils_bonus.c src/init_bonus.c src/philo_bonus.c
 OBJS = $(SRCS:.c=.o)

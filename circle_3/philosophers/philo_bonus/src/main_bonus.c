@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moutig <moutig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:06:48 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/14 19:00:13 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:10:04 by moutig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	cleanup(t_data *data)
 	sem_unlink("/forks");
 	sem_close(data->sem_write);
 	sem_unlink("/write");
+	sem_close(data->sem_death);
+	sem_unlink("/death");
 	free(data->pids);
 }
 
@@ -29,8 +31,6 @@ int	main(int argc, char **argv)
 		return (printf("Usage: ./philo <philos> <time_to_die> <time_to_eat> "
 				"<time_to_sleep> [must_eat]\n"), 1);
 	if (parse_args(&data, argc, argv))
-		return (1);
-	if (init_semaphores(&data))
 		return (1);
 	if (init_semaphores(&data))
 		return (1);

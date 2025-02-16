@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moutig <moutig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:45:18 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/14 18:53:13 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:12:08 by moutig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,16 @@ int	init_semaphores(t_data *data)
 		sem_close(data->sem_forks);
 		sem_unlink("/forks");
 		printf("Error: sem_open failed for write\n");
+		return (1);
+	}
+	data->sem_death = sem_open("/death", O_CREAT, 0644, 0);
+	if (data->sem_death == SEM_FAILED)
+	{
+		sem_close(data->sem_forks);
+		sem_unlink("/forks");
+		sem_close(data->sem_write);
+		sem_unlink("/write");
+		printf("Error: sem_open failed for death\n");
 		return (1);
 	}
 	return (0);
