@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:10:13 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/14 18:14:57 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/17 19:35:26 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ static int	check_philosopher_death(t_data *data)
 		if (get_time_in_ms() - data->philosophers[i].last_meal
 			> data->time_to_die)
 		{
+			pthread_mutex_unlock(&data->death_mutex);
 			print_action(&data->philosophers[i], "died");
+			pthread_mutex_lock(&data->death_mutex);
 			data->someone_died = 1;
 			pthread_mutex_unlock(&data->death_mutex);
 			return (1);

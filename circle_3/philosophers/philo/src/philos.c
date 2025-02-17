@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:41:55 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/14 18:15:25 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/17 19:07:39 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,20 @@ static int	take_forks(t_philo *philo)
 		pthread_mutex_unlock(philo->left_fork);
 		return (1);
 	}
-	pthread_mutex_lock(philo->left_fork);
-	print_action(philo, "has taken a fork");
-	pthread_mutex_lock(philo->right_fork);
-	print_action(philo, "has taken a fork");
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print_action(philo, "has taken a fork");
+		pthread_mutex_lock(philo->left_fork);
+		print_action(philo, "has taken a fork");
+	}
+	else
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_action(philo, "has taken a fork");
+		pthread_mutex_lock(philo->right_fork);
+		print_action(philo, "has taken a fork");
+	}
 	return (0);
 }
 

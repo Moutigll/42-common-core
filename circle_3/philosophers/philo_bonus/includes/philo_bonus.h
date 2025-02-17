@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moutig <moutig@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:08:57 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/16 23:06:57 by moutig           ###   ########.fr       */
+/*   Updated: 2025/02/17 18:48:08 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_data
 	sem_t		*sem_forks;
 	sem_t		*sem_write;
 	sem_t		*sem_death;
+	sem_t		*max_eat;
+	sem_t		*sem_death_check;
 	pid_t		*pids;
 }	t_data;
 

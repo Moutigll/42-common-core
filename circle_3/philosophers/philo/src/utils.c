@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 18:17:53 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/14 16:08:43 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/17 19:36:02 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,15 @@ void	print_action(t_philo *philo, char *action)
 
 	data = philo->data;
 	timestamp = get_time_in_ms() - data->start_time;
+	pthread_mutex_lock(&data->death_mutex);
 	pthread_mutex_lock(&data->write_mutex);
 	if (data->someone_died && ft_strcmp(action, "died") != 0)
 	{
 		pthread_mutex_unlock(&data->write_mutex);
+		pthread_mutex_unlock(&data->death_mutex);
 		return ;
 	}
 	printf("%ld %d %s\n", timestamp, philo->id, action);
 	pthread_mutex_unlock(&data->write_mutex);
+	pthread_mutex_unlock(&data->death_mutex);
 }
