@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moutig <moutig@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:41:55 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/17 19:07:39 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/02/19 00:37:25 by moutig           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,11 @@ static int	take_forks(t_philo *philo)
 		pthread_mutex_unlock(philo->left_fork);
 		return (1);
 	}
-	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_lock(philo->right_fork);
+	pthread_mutex_lock(philo->right_fork);
+	print_action(philo, "has taken a fork");
+	pthread_mutex_lock(philo->left_fork);
 		print_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_action(philo, "has taken a fork");
-	}
+
 	return (0);
 }
 
@@ -60,7 +51,7 @@ static void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	data = philo->data;
 	if (philo->id % 2 == 0)
-		usleep(1000);
+		usleep(100);
 	while (1)
 	{
 		pthread_mutex_lock(&data->death_mutex);
