@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moutig <moutig@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:41:55 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/02/22 01:45:57 by moutig           ###   ########.fr       */
+/*   Updated: 2025/02/22 16:39:31 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,10 @@ static int	take_forks(t_philo *philo)
 		pthread_mutex_unlock(philo->left_fork);
 		return (1);
 	}
-	if (philo->id == 1)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_action(philo, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		print_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
-	}
+	pthread_mutex_lock(philo->right_fork);
+	print_action(philo, "has taken a fork");
+	pthread_mutex_lock(philo->left_fork);
+	print_action(philo, "has taken a fork");
 	return (0);
 }
 
