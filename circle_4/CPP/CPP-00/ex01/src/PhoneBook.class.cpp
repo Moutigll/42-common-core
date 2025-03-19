@@ -6,13 +6,13 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:22:34 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/03/18 22:09:03 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:27:04 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.class.hpp"
 
-PhoneBook::PhoneBook(void) : maxContacts(8), nbContacts(0)
+PhoneBook::PhoneBook(void) : maxContacts(8), nbContacts(0), oldestIndex(0)
 {
 	return ;
 }
@@ -91,16 +91,38 @@ void	PhoneBook::displayContacts(void) const
 
 void	PhoneBook::searchContact(void) const
 {
+	std::string input;
 	int index;
 
 	std::cout << "Enter the index of the contact you want to see: ";
-	std::cin >> index;
-	std::cin.ignore();
+	std::getline(std::cin, input);
+
+	if (input.empty())
+	{
+		std::cout << "Error: No input provided!" << std::endl;
+		return;
+	}
+
+	for (size_t i = 0; i < input.length(); i++)
+	{
+		if (!isdigit(input[i]))
+		{
+			std::cout << "Error: Invalid input! Please enter a number." << std::endl;
+			return;
+		}
+	}
+
+	std::stringstream ss(input);
+	if (!(ss >> index))
+	{
+		std::cout << "Error: Conversion failed!" << std::endl;
+		return;
+	}
 
 	if (index < 0 || index >= nbContacts)
 	{
 		std::cout << "Error: Invalid index!" << std::endl;
-		return ;
+		return;
 	}
 
 	std::cout << "First Name: " << contacts[index].getFirstName() << std::endl;

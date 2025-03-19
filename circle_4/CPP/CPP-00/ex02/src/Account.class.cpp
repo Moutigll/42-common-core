@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:15:29 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/03/18 22:27:01 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:01:46 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@ int Account::_nbAccounts = 0;
 int Account::_totalAmount = 0;
 int Account::_totalNbDeposits = 0;
 int Account::_totalNbWithdrawals = 0;
+
+void Account::_displayTimestamp(void)
+{
+	std::time_t now = std::time(0);
+	std::tm *ltm = std::localtime(&now);
+	std::cout << "[" << 1900 + ltm->tm_year
+			  << (ltm->tm_mon < 9 ? "0" : "") << ltm->tm_mon + 1
+			  << (ltm->tm_mday < 10 ? "0" : "") << ltm->tm_mday
+			  << "_" << (ltm->tm_hour < 10 ? "0" : "") << ltm->tm_hour
+			  << (ltm->tm_min < 10 ? "0" : "") << ltm->tm_min
+			  << (ltm->tm_sec < 10 ? "0" : "") << ltm->tm_sec << "] ";
+}
 
 Account::Account(int initial_deposit)
 {
@@ -82,18 +94,6 @@ void Account::displayAccountsInfos(void)
 	_displayTimestamp();
 	std::cout << "accounts:" << _nbAccounts << ";total:" << _totalAmount 
 			  << ";deposits:" << _totalNbDeposits << ";withdrawals:" << _totalNbWithdrawals << std::endl;
-}
-
-void Account::_displayTimestamp(void)
-{
-	std::time_t now = std::time(0);
-	std::tm *ltm = std::localtime(&now);
-	std::cout << "[" << 1900 + ltm->tm_year
-			  << (ltm->tm_mon < 9 ? "0" : "") << ltm->tm_mon + 1
-			  << (ltm->tm_mday < 10 ? "0" : "") << ltm->tm_mday
-			  << "_" << (ltm->tm_hour < 10 ? "0" : "") << ltm->tm_hour
-			  << (ltm->tm_min < 10 ? "0" : "") << ltm->tm_min
-			  << (ltm->tm_sec < 10 ? "0" : "") << ltm->tm_sec << "] ";
 }
 
 int Account::getNbAccounts(void) { return _nbAccounts; }

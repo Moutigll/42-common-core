@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:07:37 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/03/18 19:09:49 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:27:21 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "Contact.class.hpp"
 # include <iomanip>
 # include <cstdlib>
+# include <sstream>
 
 class PhoneBook
 {
