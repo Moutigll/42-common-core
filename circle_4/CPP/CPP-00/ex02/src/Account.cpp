@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Account.class.cpp                                  :+:      :+:    :+:   */
+/*   Account.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:15:29 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/03/19 15:01:46 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/03/20 15:48:10 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,15 @@ int Account::_totalAmount = 0;
 int Account::_totalNbDeposits = 0;
 int Account::_totalNbWithdrawals = 0;
 
-void Account::_displayTimestamp(void)
-{
-	std::time_t now = std::time(0);
-	std::tm *ltm = std::localtime(&now);
-	std::cout << "[" << 1900 + ltm->tm_year
-			  << (ltm->tm_mon < 9 ? "0" : "") << ltm->tm_mon + 1
-			  << (ltm->tm_mday < 10 ? "0" : "") << ltm->tm_mday
-			  << "_" << (ltm->tm_hour < 10 ? "0" : "") << ltm->tm_hour
-			  << (ltm->tm_min < 10 ? "0" : "") << ltm->tm_min
-			  << (ltm->tm_sec < 10 ? "0" : "") << ltm->tm_sec << "] ";
+void	Account::_displayTimestamp(void) {
+	time_t		now;
+	struct tm	*ts;
+	char		buf[80];
+
+	now = time(NULL);
+	ts = localtime(&now);
+	strftime(buf, sizeof(buf), "[%Y%m%d_%H%M%S] ", ts);
+	std::cout << buf;
 }
 
 Account::Account(int initial_deposit)
