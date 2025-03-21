@@ -1,4 +1,4 @@
-NAME		:= ex01
+NAME		:= ex05
 
 CC			:= c++
 CFLAGS		:= -Wall -Wextra -Werror -std=c++98
@@ -8,8 +8,7 @@ INC_DIR		:= includes
 OBJ_DIR		:= obj
 
 SRCS		:=	$(SRC_DIR)/main.cpp \
-			$(SRC_DIR)/Zombie.cpp \
-			$(SRC_DIR)/zombieHorde.cpp
+				$(SRC_DIR)/Harl.cpp
 
 OBJS		:= $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
