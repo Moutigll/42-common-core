@@ -6,11 +6,11 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:57:38 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/03/18 19:10:47 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/03/25 15:01:48 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "PhoneBook.class.hpp"
+#include "PhoneBook.hpp"
 
 int main(void)
 {
@@ -20,7 +20,11 @@ int main(void)
 	while (1)
 	{
 		std::cout << "Enter a command: ";
-		std::getline(std::cin, command);
+		if (!std::getline(std::cin, command))
+		{
+			std::cout << "Error: Invalid input!" << std::endl;
+			return (1);
+		}
 		if (command == "EXIT")
 			break ;
 		else if (command == "ADD")
@@ -30,6 +34,8 @@ int main(void)
 			phoneBook.displayContacts();
 			phoneBook.searchContact();
 		}
+		else if (command.empty())
+			std::cout << "No command provided!" << std::endl;
 		else
 			std::cout << "Invalid command!" << std::endl;
 	}

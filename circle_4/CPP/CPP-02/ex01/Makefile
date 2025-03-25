@@ -1,4 +1,4 @@
-NAME		:= phonebook
+NAME		:= ex01
 
 CC			:= c++
 CFLAGS		:= -Wall -Wextra -Werror -std=c++98
@@ -7,9 +7,8 @@ SRC_DIR		:= src
 INC_DIR		:= includes
 OBJ_DIR		:= obj
 
-SRCS		:=	$(SRC_DIR)/Contact.cpp \
-				$(SRC_DIR)/PhoneBook.cpp \
-				$(SRC_DIR)/main.cpp
+SRCS		:=	$(SRC_DIR)/main.cpp \
+				$(SRC_DIR)/Fixed.cpp \
 
 OBJS		:= $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
