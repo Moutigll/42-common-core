@@ -7,8 +7,8 @@ SRC_DIR		:= src
 INC_DIR		:= includes
 OBJ_DIR		:= obj
 
-SRCS		:=	$(SRC_DIR)/Account.cpp \
-				$(SRC_DIR)/tests.cpp \
+SRCS		:=	$(SRC_DIR)/main.cpp \
+				$(SRC_DIR)/Fixed.cpp \
 
 OBJS		:= $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
