@@ -1,4 +1,4 @@
-NAME		:= ex02
+NAME		:= ex03
 
 CC			:= c++
 CFLAGS		:= -Wall -Wextra -Werror -std=c++98
@@ -9,6 +9,8 @@ OBJ_DIR		:= obj
 
 SRCS		:=	$(SRC_DIR)/main.cpp \
 				$(SRC_DIR)/Fixed.cpp \
+				$(SRC_DIR)/Point.cpp \
+				$(SRC_DIR)/bsp.cpp \
 
 OBJS		:= $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
