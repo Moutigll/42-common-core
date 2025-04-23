@@ -10,7 +10,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - wordpress_data:/var/www/html
+      - /home/${LOGIN}/data/wordpress_data:/var/www/html
     restart: unless-stopped
     networks:
       - network
@@ -24,7 +24,7 @@ services:
     env_file:
       - .env
     volumes:
-      - wordpress_data:/var/www/html
+      - /home/${LOGIN}/data/wordpress_data:/var/www/html
     restart: unless-stopped
     networks:
       - network
@@ -36,7 +36,7 @@ services:
     env_file:
       - .env
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - /home/${LOGIN}/data/mariadb_data:/var/lib/mysql
     restart: unless-stopped
     networks:
       - network
