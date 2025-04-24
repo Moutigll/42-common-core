@@ -20,7 +20,7 @@ all: up
 build:
 	@echo "[+] Creating host dirs for volumes…"
 	@mkdir -p $(MYSQL_DIR) $(WP_DIR)
-	@chmod 775 $(DATA_DIR)
+	@sudo chmod 775 $(DATA_DIR)
 	@echo "[+] Building Docker images…"
 	@$(COMPOSE) build
 
