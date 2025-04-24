@@ -1,17 +1,20 @@
 FROM alpine:3.20
 
 RUN apk update && \
-	apk add --no-cache mariadb mariadb-client && \
-	mkdir -p /run/mysqld && \
-	chown -R mysql:mysql /run/mysqld /var/lib/mysql
+    apk add --no-cache mariadb mariadb-client
 
-EXPOSE 3306
+RUN mkdir -p /run/mysqld && \
+    chown -R mysql:mysql /run/mysqld /var/lib/mysql
 
 COPY my.cnf /etc/my.cnf
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
 
-RUN chown -R mysql:mysql /var/lib/mysql
+RUN chmod 644 /etc/my.cnf && \
+    chmod 755 /usr/local/bin/entrypoint.sh && \
+    chown root:root /etc/my.cnf && \
+    chown mysql:mysql /usr/local/bin/entrypoint.sh
+
+EXPOSE 3306
+
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-

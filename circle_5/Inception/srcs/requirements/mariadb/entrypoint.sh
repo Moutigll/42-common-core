@@ -1,26 +1,25 @@
 #!/bin/sh
 set -e
 
+INIT_FLAG="/var/lib/mysql/.initialized"
+
 if [ ! -d "/var/lib/mysql/mysql" ]; then
     echo "[i] Initializing MariaDB data directory..."
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql
-    echo "[i] MariaDB data directory initialized."
+    echo "[i] Data directory initialized."
 fi
 
-echo "[i] Starting temporary MariaDB..."
-/usr/bin/mariadbd --datadir=/var/lib/mysql --user=mysql &
-PID_DB=$!
-
-echo "[i] Waiting for MariaDB to accept connections..."
-until mysqladmin ping --silent; do
-    sleep 1
-done
-
-echo "[i] MariaDB is ready for setup."
-
-INIT_FLAG="/var/lib/mysql/.initialized"
 if [ ! -f "$INIT_FLAG" ]; then
-    echo "[i] First-run setup: creating database and user..."
+    echo "[i] Starting temporary MariaDB for first-run setup..."
+    /usr/bin/mariadbd --datadir=/var/lib/mysql --user=mysql --skip-networking &
+    PID_TMP=$!
+
+    echo "[i] Waiting for temporary MariaDB to accept connections..."
+    until mysqladmin ping --silent; do
+        sleep 1
+    done
+
+    echo "[i] Running first-run SQL setup..."
     SQL="CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
     SQL="$SQL CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
     SQL="$SQL GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%';"
@@ -28,10 +27,10 @@ if [ ! -f "$INIT_FLAG" ]; then
     mysql -u root -e "$SQL"
 
     touch "$INIT_FLAG"
-    echo "[i] First-run setup complete. Shutting down temporary server..."
+    echo "[i] First-run setup complete, shutting down temporary server..."
     mysqladmin -u root shutdown
-    wait $PID_DB
+    wait $PID_TMP
 fi
 
-exec /usr/bin/mariadbd --defaults-file=/etc/my.cnf --user=mysql --datadir=/var/lib/mysql
-
+echo "[i] Launching MariaDB..."
+exec /usr/bin/mariadbd --defaults-file=/etc/my.cnf --datadir=/var/lib/mysql --user=mysql
