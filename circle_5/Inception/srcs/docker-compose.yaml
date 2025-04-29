@@ -4,9 +4,10 @@ services:
     build:
       context: ./requirements/nginx
     depends_on:
-      - wordpress
-    environment:
-      HOST: ${DOMAIN_NAME}
+      wordpress:
+        condition: service_healthy
+    env_file:
+      - .env
     ports:
       - "443:443"
     volumes:
@@ -28,6 +29,11 @@ services:
     restart: unless-stopped
     networks:
       - network
+    healthcheck:
+      test: ["CMD", "sh", "-c", "nc -z localhost 9000"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   mariadb:
     container_name: mariadb

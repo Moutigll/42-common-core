@@ -14,7 +14,6 @@ else
 	echo "[i] Generating minimal wp-config.php..."
 
 	cat > wp-config.php <<EOF
-‎ 
 <?php
 
 define( 'DB_NAME', '${MYSQL_DATABASE}' );
@@ -38,3 +37,15 @@ EOF
 fi
 
 exec "$@"
+curl -k \
+-c cookies.txt -b cookies.txt \
+-X POST "https://localhost/wp-admin/install.php?step=2" \
+-d "language=" \
+-d "weblog_title=Test+Site" \
+-d "user_name=admin" \
+-d "admin_password=password123" \
+-d "admin_password2=password123" \
+-d "pw_weak=on" \
+-d "admin_email=admin%40example.com" \
+-d "blog_public=1" \
+-d "Submit=Install+WordPress"

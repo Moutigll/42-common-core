@@ -49,7 +49,7 @@ clean:
 	@$(COMPOSE) down -v --rmi all
 	@sudo docker system prune -af
 
-fclean:
+fclean: clean
 	@echo "[+] Full clean (Docker + host data)…"
 	@sudo docker system prune -af
 	@sudo docker volume prune -f

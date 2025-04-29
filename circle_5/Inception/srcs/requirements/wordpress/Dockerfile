@@ -7,7 +7,8 @@ RUN apk update && \
 		php82-fpm \
 		php82-mysqli \
 		curl \
-		wget
+		wget \
+		netcat-openbsd
 
 RUN sed -i 's/^;daemonize = yes/daemonize = no/' /etc/php82/php-fpm.conf && \
 	sed -i 's|^listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|' /etc/php82/php-fpm.d/www.conf
@@ -33,4 +34,3 @@ ENTRYPOINT ["/usr/local/bin/create_wp.sh"]
 RUN chown -R nobody:nogroup /var/www/html
 
 CMD ["php-fpm82", "-F"]
-
