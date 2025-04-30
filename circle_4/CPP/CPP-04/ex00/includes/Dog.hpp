@@ -1,0 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Dog.hpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/30 14:14:56 by ele-lean          #+#    #+#             */
+/*   Updated: 2025/04/30 14:39:16 by ele-lean         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef DOG_HPP
+# define DOG_HPP
+
+#include "Animal.hpp"
+
+class Dog: public Animal
+{
+	public:
+		Dog();
+		Dog(const std::string &type);
+		Dog(const Dog &other);
+		Dog &operator=(const Dog &other);
+		~Dog();
+
+		void makeSound(void);
+
+	private:
+		std::string _type;
+};
+
+#endif
