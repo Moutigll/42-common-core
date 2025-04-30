@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 22:00:25 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/04/29 12:27:01 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:48:05 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "ClapTrap.hpp"
 
-class ScavTrap: public ClapTrap
+class ScavTrap: virtual public ClapTrap
 {
 	public:
 		ScavTrap(void);

@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 22:00:25 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/04/24 01:24:45 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:27:01 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ class ScavTrap: public ClapTrap
 
 		ScavTrap	&operator=(ScavTrap const &copy);
 
-		void	guardGate(void);
+		void		attack(std::string const &target);
+		void		guardGate(void);
 };
 
 #endif

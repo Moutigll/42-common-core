@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 01:24:03 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/04/24 01:29:23 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:09:59 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ class FragTrap: public ClapTrap
 		~FragTrap(void);
 
 		FragTrap	&operator=(FragTrap const &copy);
-
-		void	highFivesGuys(void);
+		
+		void		attack(std::string const &target);
+		void		highFivesGuys(void);
 };
 
 #endif

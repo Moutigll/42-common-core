@@ -6,7 +6,7 @@
 /*   By: ele-lean <ele-lean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 21:47:56 by ele-lean          #+#    #+#             */
-/*   Updated: 2025/04/23 21:51:09 by ele-lean         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:11:04 by ele-lean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,26 @@
 #include <iostream>
 #include <string>
 
+// Constructors
+#define CYAN_LIGHT "\033[38;5;159m" // Default constructor
+#define CYAN "\033[38;5;45m"        // Parameterized constructor
+#define CYAN_DARK "\033[38;5;25m"   // Copy constructor
+
+#define PURPLE "\033[38;5;93m" // Destructor
+#define YELLOW "\033[38;5;226m" // Assignment operator
+
+#define GRAY "\033[38;5;240m" // Name
+#define RED "\033[38;5;196m" // Attack
+#define RED_LIGHT "\033[38;5;203m" // Take damage
+#define GREEN "\033[38;5;82m" // Be repaired
+#define BROWN "\033[38;5;130m" // Out of energy
+
+#define RESET "\033[0m" // Reset color
+
 class ClapTrap {
 	public:
 		ClapTrap();
-		ClapTrap(std::string name);
+		ClapTrap(const std::string &name);
 		ClapTrap(const ClapTrap &other);
 		ClapTrap &operator=(const ClapTrap &other);
 		~ClapTrap();
