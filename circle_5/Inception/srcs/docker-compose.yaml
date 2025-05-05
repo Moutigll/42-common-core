@@ -47,6 +47,19 @@ services:
     networks:
       - network
 
+  sftp:
+    build:
+      context: ./requirements/sftp
+    container_name: sftp
+    ports:
+      - "2222:22"
+    volumes:
+      - wordpress_data:/home/ftpuser/upload
+    networks:
+      - network
+    restart: unless-stopped
+
+
 networks:
   network:
     driver: bridge

@@ -4,7 +4,8 @@ RUN apk update && apk add --no-cache \
 	nginx \
 	openssl \
 	curl \
-	bash
+	bash \
+	git
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
@@ -17,6 +18,13 @@ RUN mkdir -p /etc/nginx/ssl && \
 
 RUN mkdir -p /run/nginx /var/www/html && \
 	chown -R nginx:nginx /var/www/html
+
+RUN git clone https://github.com/Moutigll/Dortstan-website \
+	&& mkdir -p /home/Dortstan \
+	&& mv -f Dortstan-website/dist/* /home/Dortstan/ \
+	&& rm -rf Dortstan-website \
+	&& chown -R nginx:nginx /home/Dortstan
+
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
