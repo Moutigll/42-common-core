@@ -46,18 +46,48 @@ services:
     restart: unless-stopped
     networks:
       - network
-
   sftp:
     build:
       context: ./requirements/sftp
+      args:
+        FTP_USER: ${FTP_USER}
+        FTP_PASSWORD: ${FTP_PASSWORD}
     container_name: sftp
     ports:
       - "2222:22"
+    env_file:
+      - .env
     volumes:
-      - wordpress_data:/home/ftpuser/upload
+      - wordpress_data:/home/${FTP_USER}/upload
     networks:
       - network
     restart: unless-stopped
+  adminer:
+    build:
+      context: ./requirements/adminer
+    container_name: adminer
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - network
+
+  redis:
+    build:
+      context: ./requirements/redis
+    container_name: redis
+    expose:
+      - "6379"
+    networks:
+      - network
+    restart: unless-stopped
+
+
+
 
 
 networks:
