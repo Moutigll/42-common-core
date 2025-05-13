@@ -24,7 +24,7 @@ fi
 echo "[i] Synchronizing cover images..."
 rsync -avz -e "ssh -i /root/.ssh/id_ed25519 -o StrictHostKeyChecking=no" \
 	ubuntu@176.181.239.55:/home/server/static/images/covers/ \
-	/app/OSTJourney/static/images/covers/
+	/app/OSTJourney/static/images/covers/ > /dev/null 2>&1
 
 echo "[i] Starting app..."
 exec python3 app.py

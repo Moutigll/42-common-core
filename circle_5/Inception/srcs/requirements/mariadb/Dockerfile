@@ -8,6 +8,7 @@ RUN mkdir -p /run/mysqld && \
 
 COPY my.cnf /etc/my.cnf
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY kuma.sql /usr/local/bin/kuma.sql
 
 RUN chmod 644 /etc/my.cnf && \
     chmod 755 /usr/local/bin/entrypoint.sh && \

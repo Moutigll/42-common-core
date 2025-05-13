@@ -1,6 +1,6 @@
 FROM alpine:3.20
 
-RUN apk add --no-cache nodejs npm git curl bash python3 make g++
+RUN apk add --no-cache nodejs npm git curl bash python3 make g++ mysql-client
 
 WORKDIR /app
 
@@ -12,6 +12,9 @@ RUN npm run build
 
 RUN npm prune --production
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 3001
 
-CMD ["node", "server/server.js"]
+ENTRYPOINT ["/entrypoint.sh"]

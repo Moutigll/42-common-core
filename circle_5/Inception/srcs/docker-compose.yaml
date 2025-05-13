@@ -44,6 +44,11 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - network
   sftp:
@@ -86,6 +91,38 @@ services:
       - network
     restart: unless-stopped
 
+  uptimekuma:
+    build:
+      context: ./requirements/uptimekuma
+    container_name: uptimekuma
+    depends_on:
+      - mariadb
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    volumes:
+      - uptimekuma_data:/app/data
+    networks:
+      - network
+    restart: unless-stopped
+
+  ostjourney:
+    build:
+      context: ./requirements/ostjourney
+    container_name: ostjourney
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    volumes:
+      - ostjourney_data:/app/OSTJourney/instance
+      - ostjourney_songs:/app/OSTJourney/songs
+    networks:
+      - network
+    restart: unless-stopped
+
+
 
 
 
@@ -106,4 +143,22 @@ volumes:
     driver_opts:
       type: none
       device: /home/${LOGIN}/data/wordpress
+      o: bind
+  uptimekuma_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${LOGIN}/data/uptimekuma
+      o: bind
+  ostjourney_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${LOGIN}/data/ostjourney
+      o: bind
+  ostjourney_songs:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${LOGIN}/songs
       o: bind
