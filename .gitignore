@@ -2,5 +2,5 @@
 circle_2/pipex/out
 circle_2/pipex/outfile
 .gitignore
-*/.vscode
+.vscode
 .vscode/settings.json
