@@ -10,3 +10,6 @@
 [submodule "circle_4/cub3D"]
 	path = circle_4/cub3D
 	url = https://github.com/moutigll/cub3D
+[submodule "circle_5/HajServ"]
+	path = circle_5/HajServ
+	url = https://github.com/Moutigll/HajServ.git
