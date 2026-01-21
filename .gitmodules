@@ -13,3 +13,6 @@
 [submodule "circle_5/HajServ"]
 	path = circle_5/HajServ
 	url = https://github.com/Moutigll/HajServ.git
+[submodule "circle_6/ft_transcendence"]
+	path = circle_6/ft_transcendence
+	url = git@github.com:0xySan/ft_transcendence.git
